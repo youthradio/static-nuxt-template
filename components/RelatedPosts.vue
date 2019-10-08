@@ -1,19 +1,23 @@
 <template>
-  <div class="flex">
-    <div
-      v-for="post in postsData"
-      :key="post.id"
-    >
-      <img
-        class="img-fluid"
-        :src="post.episode_featured_image"
+  <footer>
+    <h2>RELATED POSTS </h2>
+    <div class="flex">
+      <div
+        v-for="post in postsData"
+        :key="post.id"
       >
-      // eslint-disable-next-line vue/no-v-html
-      <h3 v-html="post.title.rendered" />
+        <img
+          class="img-fluid"
+          :src="post.episode_featured_image"
+        >
+        <h3>
+          {{ post.title.rendered | unescape }}
+        </h3>
+      </div>
+      >
     </div>
-    >
-  </div>
-  </div>
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -21,6 +25,19 @@
 // import POSTCONFIG from '../post.config'
 
 export default {
+  filters: {
+    unescape (value) {
+      if (!value) { return '' }
+      if (process.client) {
+        const d = document.createElement('div')
+        d.innerHTML = value
+
+        return d.innerHTML
+      } else {
+        return ''
+      }
+    }
+  },
   props: {
     postsData: {
       type: Array,
