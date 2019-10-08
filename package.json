@@ -15,10 +15,16 @@
   "dependencies": {
     "@nuxtjs/google-gtag": "^1.0.4",
     "d3-array": "^2.3.1",
+    "d3-composite-projections": "^1.2.3",
     "d3-dsv": "^1.1.1",
+    "d3-ease": "^1.0.5",
+    "d3-geo": "^1.11.6",
+    "d3-selection": "^1.4.0",
+    "d3-transition": "^1.2.0",
     "howler": "^2.1.2",
     "nuxt": "^2.9.2",
     "scrollmagic": "^2.0.7",
+    "topojson-client": "^3.0.1",
     "vue-observe-visibility": "^0.4.4"
   },
   "devDependencies": {
