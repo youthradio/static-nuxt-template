@@ -1,10 +1,12 @@
 <template>
   <footer>
     <h2>RELATED POSTS </h2>
-    <div class="flex">
+    <div class="flex postContainer">
       <div
         v-for="post in postsData"
         :key="post.id"
+        class="postElement"
+        :style="{ borderColor: post.acf.secondary_color }"
       >
         <img
           class="img-fluid"
@@ -16,12 +18,10 @@
       </div>
       >
     </div>
-    </div>
   </footer>
 </template>
 
 <script>
-
 // import POSTCONFIG from '../post.config'
 
 export default {
@@ -43,6 +43,9 @@ export default {
       type: Array,
       default: null
     }
+  },
+  computed: {
+
   }
 
 }
@@ -58,5 +61,17 @@ export default {
 }
 .flex{
   display: flex;
+}
+
+.postContainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.postElement{
+  margin-bottom: 15px;
+  border-style: solid;
+  border-width: 7px;
 }
 </style>
