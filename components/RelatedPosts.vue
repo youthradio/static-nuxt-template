@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer class="relatedPostContainer">
     <h2>RELATED POSTS </h2>
     <div class="flex postContainer">
       <div
@@ -8,15 +8,16 @@
         class="postElement"
         :style="{ borderColor: post.acf.secondary_color }"
       >
-        <img
-          class="img-fluid"
-          :src="post.episode_featured_image"
-        >
-        <h3>
-          {{ post.title.rendered | unescape }}
-        </h3>
+        <div class="postInner">
+          <h3>
+            {{ post.title.rendered | unescape }}
+          </h3>
+          <img
+            class="img-fluid postImage"
+            :src="post.episode_featured_image"
+          >
+        </div>
       </div>
-      >
     </div>
   </footer>
 </template>
@@ -53,6 +54,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/css/vars';
+@import '~@/css/mixins';
 
 .img-fluid{
   width: 100%;
@@ -62,16 +64,28 @@ export default {
 .flex{
   display: flex;
 }
-
+.postInner{
+  margin: 1.5rem;
+}
+.relatedPostContainer{
+  max-width: 90%;
+  margin: 0 auto;
+}
 .postContainer{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  @include breakpoint (medium) {
+    flex-wrap: nowrap;
+  }
 }
-
 .postElement{
+  flex-grow: 1;
   margin-bottom: 15px;
   border-style: solid;
   border-width: 7px;
+  @include breakpoint (medium) {
+    margin: 0 0.5rem 0 0.5rem;
+  }
 }
 </style>
