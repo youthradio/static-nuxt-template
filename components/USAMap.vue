@@ -22,6 +22,11 @@ export default {
       default: null,
       required: false
     },
+    contentData: {
+      type: Array,
+      default: null,
+      required: false
+    },
     mapData: {
       type: Object,
       default: null,
@@ -51,7 +56,9 @@ export default {
   },
   watch: {
     loadingMap () {
-      this.renderMap()
+      if (!this.loadingMap) {
+        this.renderMap()
+      }
     },
     loadingMarkers () {
       this.renderMap()
@@ -69,28 +76,29 @@ export default {
       .attr('height', HEIGHT)
     this.svg.attr('viewBox', '0 0 ' + WIDTH + ' ' + HEIGHT)
       .attr('perserveAspectRatio', 'xMinYMid meet')
+
     const defs = this.svg.append('defs')
     // create filter with id #drop-shadow
     // height=130% so that the shadow is not clipped
     const filter = defs.append('filter')
       .attr('id', 'drop-shadow')
       .attr('height', '130%')
-    // SourceAlpha refers to opacity of graphic that this filter will be applied to
-    // convolve that with a Gaussian with standard deviation 3 and store result
-    // in blur
+      // SourceAlpha refers to opacity of graphic that this filter will be applied to
+      // convolve that with a Gaussian with standard deviation 3 and store result
+      // in blur
     filter.append('feGaussianBlur')
       .attr('in', 'SourceAlpha')
       .attr('stdDeviation', 5)
       .attr('result', 'blur')
-    // translate output of Gaussian blur to the right and downwards with 2px
-    // store result in offsetBlur
+      // translate output of Gaussian blur to the right and downwards with 2px
+      // store result in offsetBlur
     filter.append('feOffset')
       .attr('in', 'blur')
       .attr('dx', 5)
       .attr('dy', 5)
       .attr('result', 'offsetBlur')
-    // overlay original SourceGraphic over translated blurred opacity by using
-    // feMerge filter. Order of specifying inputs is important!
+      // overlay original SourceGraphic over translated blurred opacity by using
+      // feMerge filter. Order of specifying inputs is important!
     const feMerge = filter.append('feMerge')
     feMerge.append('feMergeNode')
       .attr('in', 'offsetBlur')
@@ -103,12 +111,14 @@ export default {
     renderMap () {
       if (!this.loadingMap && !this.loadingMarkers) {
         this.drawMap()
-        this.drawMarkers()
+        // this.drawMarkers()
       }
     },
     drawMap () {
-      this.svg.append('path')
-        .attr('filter', 'url(#drop-shadow)')
+      this.svg.append('g')
+        .attr('class', 'boundaries')
+        .append('path')
+        // .attr('filter', 'url(#drop-shadow)')
         .attr('d', this.path(topojson.mesh(this.mapData, this.mapData.objects.states, (a, b) => a === b)))
       this.svg.append('g').selectAll('.states')
         .data(topojson.feature(this.mapData, this.mapData.objects.states).features)
@@ -117,8 +127,23 @@ export default {
         .attr('d', this.path)
       this.svg.append('path')
         .style('fill', 'none')
-        .style('stroke', 'rgb(0,0,0,0.5)')
+        // .style('stroke', 'black')
         .attr('d', this.projection.getCompositionBorders())
+
+      this.drawLabels()
+    },
+    drawLabels () {
+      this.svg.append('g')
+        .attr('class', 'state-labels')
+        .selectAll('.state-label')
+        .data(topojson.feature(this.mapData, this.mapData.objects.states).features)
+        .enter().append('text')
+        .attr('class', 'state-label')
+        .attr('x', d => this.path.centroid(d)[0])
+        .attr('y', d => this.path.centroid(d)[1])
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'black')
+        .text(d => d.properties.STUSPS)
     },
     drawMarkers () {
       this.svg.append('g').selectAll('.marker')
@@ -135,6 +160,8 @@ export default {
         .attr('transform', e => `translate(${this.projection(e.geo)[0]},${this.projection(e.geo)[1]})scale(${MARKER_S_MIN},${MARKER_S_MIN})`)
         .attr('filter', 'url(#drop-shadow)')
     },
+    drawContentData () {
+    },
     resizeContainer () {
       const targetWidth = parseInt(this.svg.node().parentNode.clientWidth)
       this.svg.attr('width', targetWidth)
@@ -148,6 +175,10 @@ export default {
 <style lang="scss" scoped>
 @import '~@/css/_vars';
 /deep/ #map {
+  .state-label{
+    text-transform: uppercase;
+    font-weight: bold;
+  }
   .states {
       stroke: $dark;
       stroke-width: 1px;
