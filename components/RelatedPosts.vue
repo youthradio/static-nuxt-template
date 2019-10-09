@@ -9,13 +9,17 @@
         :style="{ borderColor: post.acf.secondary_color }"
       >
         <div class="postInner">
-          <h3>
-            {{ post.title.rendered | unescape }}
-          </h3>
-          <img
-            class="img-fluid postImage"
-            :src="post.episode_featured_image"
-          >
+          <div class="section">
+            <h3>
+              {{ post.title.rendered | unescape }}
+            </h3>
+          </div>
+          <div class="section">
+            <img
+              class="img-fluid postImage"
+              :src="post.episode_featured_image"
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -59,14 +63,28 @@ export default {
 .img-fluid{
   width: 100%;
   max-width: 100%;
-  height: auto;
+  min-height: 10rem;
+  object-fit: cover;
 }
 .flex{
   display: flex;
 }
 .postInner{
   margin: 1.5rem;
+  h3 {
+    font-weight: 800;
+  }
+  @include breakpoint (medium){
+  .section{
+    min-height: 8rem;
+    max-height: 100%;
+  }
+  h3{
+    font-size: 1rem;
+  }
+  }
 }
+
 .relatedPostContainer{
   max-width: 90%;
   margin: 0 auto;
@@ -84,8 +102,10 @@ export default {
   margin-bottom: 15px;
   border-style: solid;
   border-width: 7px;
+  width: 100%;
   @include breakpoint (medium) {
     margin: 0 0.5rem 0 0.5rem;
+    width: calc(100% / 3);
   }
 }
 </style>
