@@ -13,7 +13,7 @@
       <p>Arcu odio ut sem nulla pharetra diam sit amet. Non sodales neque sodales ut etiam sit amet nisl purus. Elementum nibh tellus molestie nunc non blandit massa enim. Non diam phasellus vestibulum lorem sed risus ultricies. Vel facilisis volutpat est velit egestas dui. Ut ornare lectus sit amet est placerat in egestas. Scelerisque viverra mauris in aliquam. Tortor posuere ac ut consequat semper viverra nam libero justo. Libero nunc consequat interdum varius sit. Scelerisque felis imperdiet proin fermentum leo vel orci porta. Ut eu sem integer vitae justo eget magna fermentum iaculis. Vitae sapien pellentesque habitant morbi tristique senectus. Elementum tempus egestas sed sed risus. Et sollicitudin ac orci phasellus egestas.</p>
       <p>In vitae turpis massa sed elementum tempus egestas. Eget mi proin sed libero enim sed faucibus. Nullam non nisi est sit amet facilisis magna etiam tempor. Arcu non sodales neque sodales ut etiam. Magna sit amet purus gravida quis blandit turpis. Ultricies mi quis hendrerit dolor magna eget est lorem. Euismod elementum nisi quis eleifend quam adipiscing vitae. Urna porttitor rhoncus dolor purus. Nec ullamcorper sit amet risus nullam eget. Mi tempus imperdiet nulla malesuada pellentesque elit. Vulputate mi sit amet mauris commodo quis imperdiet massa. Integer feugiat scelerisque varius morbi enim.</p>
     </article>
-    <RelatedPosts :posts-data="postsData" />
+    <RelatedPostsContainer />
   </div>
 </template>
 
@@ -24,14 +24,14 @@ import POSTCONFIG from '../post.config'
 import ROWS_DATA from '~/data/data.json'
 import MenuHeader from '~/components/MenuHeader.vue'
 import FeatureHeader from '~/components/FeatureHeader.vue'
-import RelatedPosts from '~/components/RelatedPosts.vue'
+import RelatedPostsContainer from '~/components/RelatedPostsContainer.vue'
 import MapContainer from '~/components/MapContainer.vue'
 
 export default {
   components: {
     MenuHeader,
     FeatureHeader,
-    RelatedPosts,
+    RelatedPostsContainer,
     MapContainer
   },
   mixins: [
