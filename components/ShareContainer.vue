@@ -32,6 +32,8 @@ export default {
 
 <style scoped lang="scss" >
 @import '~@/css/vars';
+@import '~@/css/mixins';
+
 .dark {
     color: $black;
 }
@@ -44,6 +46,12 @@ export default {
     width: 100%;
     justify-content: space-around;
     padding: 0;
+
+    @include breakpoint (medium){
+        max-width: 10rem;
+        margin: 0 auto;
+    }
+
     li {
         display: inline;
     }
