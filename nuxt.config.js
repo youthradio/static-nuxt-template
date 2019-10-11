@@ -33,10 +33,10 @@ export default {
       { name: 'twitter:description', content: POSTCONFIG.description },
       { name: 'twitter:image', content: POSTCONFIG.featureImage },
       { name: 'twitter:image:alt', content: POSTCONFIG.featureImageDescription },
-      { itemprop: 'description', conten: POSTCONFIG.description },
-      { itemprop: 'image', conten: POSTCONFIG.featureImage },
-      { name: 'msapplication-TileColor', conten: '#da532c' },
-      { name: 'theme-color', conten: '#ffffff' }
+      { itemprop: 'description', content: POSTCONFIG.description },
+      { itemprop: 'image', content: POSTCONFIG.featureImage },
+      { name: 'msapplication-TileColor', content: '#da532c' },
+      { name: 'theme-color', content: '#ffffff' }
     ],
     link: [
       { rel: 'icon', type: 'apple-touch-icon', sizes: '180x180', href: 'favicon/apple-touch-icon.png' },
