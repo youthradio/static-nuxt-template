@@ -11,6 +11,7 @@
     </article>
     <ShareContainer />
     <RelatedPostsContainer />
+    <FooterContainer />
   </div>
 </template>
 
@@ -21,13 +22,15 @@ import RelatedPostsContainer from '~/components/RelatedPostsContainer'
 import MapContainer from '~/components/MapContainer'
 import HeaderContainer from '~/components/HeaderContainer'
 import ShareContainer from '~/components/ShareContainer'
+import FooterContainer from '~/components/FooterContainer'
 
 export default {
   components: {
     RelatedPostsContainer,
     MapContainer,
     HeaderContainer,
-    ShareContainer
+    ShareContainer,
+    FooterContainer
   },
   mixins: [
     CommonUtils
