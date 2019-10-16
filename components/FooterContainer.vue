@@ -2,7 +2,7 @@
   <footer>
     <div class="top-block">
       <div class="item logo-container">
-        <FullLogo class="logo" />
+        <a href="https://yr.media"><FullLogo class="logo" /></a>
       </div>
       <div class="item menu-container">
         <ul class="pages-menu">
