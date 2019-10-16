@@ -12,6 +12,7 @@
     <ShareContainer />
     <RelatedPostsContainer />
     <FooterContainer />
+    <FooterEmailContainer />
   </div>
 </template>
 
@@ -23,6 +24,7 @@ import MapContainer from '~/components/MapContainer'
 import HeaderContainer from '~/components/HeaderContainer'
 import ShareContainer from '~/components/ShareContainer'
 import FooterContainer from '~/components/FooterContainer'
+import FooterEmailContainer from '~/components/FooterEmailContainer'
 
 export default {
   components: {
@@ -30,7 +32,8 @@ export default {
     MapContainer,
     HeaderContainer,
     ShareContainer,
-    FooterContainer
+    FooterContainer,
+    FooterEmailContainer
   },
   mixins: [
     CommonUtils
