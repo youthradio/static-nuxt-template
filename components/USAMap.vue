@@ -49,7 +49,8 @@ export default {
       aspect: null,
       projection: null,
       path: null,
-      isMapReady: false
+      isMapReady: false,
+      annotations: []
     }
   },
   computed: {
@@ -57,6 +58,127 @@ export default {
   watch: {
     loadingMap () {
       if (!this.loadingMap) {
+        const b = [
+          {
+            'x': 740.0849895461586,
+            'y': 268.9751849465421,
+            'dx': 60.046630859375,
+            'dy': 65.40789794921875,
+            'note': {
+              'title': 'DC',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 743.4746223867401,
+            'y': 265.89961992131657,
+            'dx': 56.8299560546875,
+            'dy': 42.890472412109375,
+            'note': {
+              'title': 'MD',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 815.4069125271898,
+            'y': 126.2672009342402,
+            'dx': 39.673583984375,
+            'dy': 18.22845458984375,
+            'note': {
+              'title': 'ME',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 787.8938928856286,
+            'y': 205.75244924877535,
+            'dx': 67.55242919921875,
+            'dy': 47.179473876953125,
+            'note': {
+              'title': 'CT',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 761.065598396688,
+            'y': 262.7419972859574,
+            'dx': 39.673583984375,
+            'dy': 20.372955322265625,
+            'note': {
+              'title': 'DE',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 798.0169056737703,
+            'y': 191.16485949689456,
+            'dx': 57.90216064453125,
+            'dy': 4.289031982421875,
+            'note': {
+              'title': 'MA',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 793.4707328728683,
+            'y': 164.364382245589,
+            'dx': 61.118896484375,
+            'dy': 5.361297607421875,
+            'note': {
+              'title': 'NH',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 767.8506848054253,
+            'y': 238.40275364135388,
+            'dx': 34.3123779296875,
+            'dy': 20.37298583984375,
+            'note': {
+              'title': 'NJ',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 803.736373653626,
+            'y': 200.8502403038496,
+            'dx': 52.540771484375,
+            'dy': 22.517471313476562,
+            'note': {
+              'title': 'RI',
+              'orientation': 'leftRight'
+            }
+          },
+          {
+            'x': 777.5488720941044,
+            'y': 160.9148348403736,
+            'dx': -1.07232666015625,
+            'dy': -23.58971405029297,
+            'note': {
+              'title': 'VT',
+              'orientation': 'leftRight'
+            }
+          }
+        ]
+        this.annotations = topojson.feature(this.mapData, this.mapData.objects.states).features.map((e) => {
+          const x = this.path.centroid(e)[0]
+          const y = this.path.centroid(e)[1]
+          const label = e.properties.STUSPS
+          const custom = b.find(d => d.note.title === label)
+          return ({
+            note: {
+              title: `${label}`,
+              label: '18',
+              padding: 0,
+              orientation: custom ? ((label !== 'VT') ? 'leftRight' : 'bottomTop') : ''
+            },
+            type: custom ? d3.annotationCallout : d3.annotationLabel,
+            x,
+            y,
+            dx: custom ? custom.dx : 0,
+            dy: custom ? custom.dy : 0
+          })
+        })
         this.renderMap()
       }
     },
@@ -106,8 +228,23 @@ export default {
       .attr('in', 'SourceGraphic')
     this.resizeContainer()
     window.addEventListener('resize', this.resizeContainer)
+
+    // topojson.feature(this.mapData, this.mapData.objects.states).features
   },
   methods: {
+    renderAnnotations () {
+      const makeAnnotations = d3.annotation()
+        .annotations(this.annotations)
+
+      this.svg
+        .append('g')
+        .attr('class', 'annotation-group')
+        .call(makeAnnotations)
+        .on('dblclick', function () {
+          makeAnnotations.editMode(!makeAnnotations.editMode()).update()
+        })
+      window.ann = makeAnnotations
+    },
     renderMap () {
       if (!this.loadingMap && !this.loadingMarkers) {
         this.drawMap()
@@ -130,20 +267,7 @@ export default {
         // .style('stroke', 'black')
         .attr('d', this.projection.getCompositionBorders())
 
-      this.drawLabels()
-    },
-    drawLabels () {
-      this.svg.append('g')
-        .attr('class', 'state-labels')
-        .selectAll('.state-label')
-        .data(topojson.feature(this.mapData, this.mapData.objects.states).features)
-        .enter().append('text')
-        .attr('class', 'state-label')
-        .attr('x', d => this.path.centroid(d)[0])
-        .attr('y', d => this.path.centroid(d)[1])
-        .attr('text-anchor', 'middle')
-        .attr('fill', 'black')
-        .text(d => d.properties.STUSPS)
+      this.renderAnnotations()
     },
     drawMarkers () {
       this.svg.append('g').selectAll('.marker')
