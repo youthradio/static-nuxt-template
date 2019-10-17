@@ -4,7 +4,7 @@
       <h3 class="title">
         Get Fresh Updates
       </h3>
-      <form class="mc-form" method="POST" action="" @submit="submit">
+      <form class="mc-form" method="POST" action="" @submit.prevent="submit">
         <input
           v-model="email"
           class="text email"
@@ -15,6 +15,12 @@
         >
         <input v-model="name" type="text" value="pending" name="status" hidden="">
         <button class="submit icon-arrow-right" type="submit" name="submit" />
+        <p v-if="response.error" class="message error-message">
+          {{ response.message }}
+        </p>
+        <p v-if="response.sucess" class="message error-message">
+          {{ response.message }}
+        </p>
       </form>
     </div>
   </div>
@@ -30,53 +36,44 @@ export default {
     return {
       name: null,
       email: null,
-      errors: []
+      response: null
 
     }
   },
   methods: {
-    submit () {
-    //   // const url = 'https://yr.media/wp-admin/admin-ajax.php'
-    //      if (this.name && this.age) {
-    //        return true;
-    //     }
-    //     e.preventDefault()
-    //     const submitBtn = $(this)
-    //     const form = $(this).parent()
-    //     const email = form.find('.email').val()
+    encode (obj) {
+      return Object.keys(obj).map((key) => {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key])
+      }).join('&')
+    },
+    async submit (email) {
+      const url = 'https://yr.media/wp-admin/admin-ajax.php'
 
-      //     const data = {
-      //       action: 'mailchimp_subscription',
-      //       email
-      //     }
+      const data = {
+        action: 'mailchimp_subscription',
+        email
 
-      //     submitBtn.css('pointer-events', 'none')
-      //     form.find('.message').remove()
+      }
+      try {
+        const res = await fetch(url,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;',
+              'charset': 'UTF-8'
+            },
+            body: this.encode(data),
+            mode: 'no-cors'
 
-      //     $.ajax({
-      //       method: 'POST',
-      //       url: ajaxVariables.ajaxurl,
-      //       data,
-      //       success (response) {
-      //         response = JSON.parse(response)
-      //         const messageClassName = response.success ? 'message' : 'message error-message'
-      //         form.append(`<p class="${messageClassName}">${response.message}</p>`)
-      //         submitBtn.css('pointer-events', 'all')
-      //         setTimeout(function () {
-      //           form.find('.message').remove()
-      //         }, 6000)
-      //       },
-      //       error () {
-      //         form.append('<p class="message error-message">Sorry, the request failed. Please, try again later.</p>')
-      //         submitBtn.css('pointer-events', 'all')
-
-    //         setTimeout(function () {
-    //           form.find('.message').remove()
-    //         }, 6000)
-    //       }
-    //     })
-    //   })
-    // }
+            // redirect: 'follow',
+            // referrer: 'no-referrer',
+            // credentials: 'same-origin',
+            // cache: 'no-cache'
+          })
+        this.response = await res.json()
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

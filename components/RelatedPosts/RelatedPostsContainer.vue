@@ -1,6 +1,13 @@
 <template>
   <div>
-    <RelatedPosts :posts-data="postsData" />
+    <RelatedPosts
+      v-observe-visibility="{
+        callback: visibilityChanged,
+        once: true,
+      }"
+      class="row"
+      :posts-data="postsData"
+/>
   </div>
 </template>
 
