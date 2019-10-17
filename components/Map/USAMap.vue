@@ -7,7 +7,7 @@
 <script>
 import { geoAlbersUsaTerritories } from 'd3-composite-projections'
 import * as topojson from 'topojson-client'
-import d3 from '../util/d3'
+import d3 from '../../util/d3'
 
 const WIDTH = 920
 const HEIGHT = 600

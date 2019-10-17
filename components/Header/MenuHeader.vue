@@ -193,7 +193,7 @@
 </template>
 
 <script>
-import CommonUtils from '../mixins/CommonUtils'
+import CommonUtils from '../../mixins/CommonUtils'
 
 export default {
   name: 'MenuHeader',

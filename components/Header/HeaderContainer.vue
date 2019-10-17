@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import POSTCONFIG from '../post.config'
-import MenuHeader from '~/components/MenuHeader'
-import FeatureHeader from '~/components/FeatureHeader'
+import POSTCONFIG from '../../post.config'
+import MenuHeader from './MenuHeader'
+import FeatureHeader from './FeatureHeader'
 
 export default {
   name: 'HeadContainer',

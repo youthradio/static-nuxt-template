@@ -1,61 +1,83 @@
 <template>
-  <footer>
-    <div class="top-block">
-      <div class="item logo-container">
-        <a href="https://yr.media"><FullLogo class="logo" /></a>
-      </div>
-      <div class="item menu-container">
-        <ul class="pages-menu">
-          <li class="menu-item">
-            <a href="https://yr.media/join-us/">Join Us</a>
-          </li>
-          <li class="menu-item">
-            <a href="https://yr.media/about-yr/">About YR Media</a>
-          </li>
-          <li class="menu-item">
-            <a href="https://yr.media/donate/">Support Us</a>
-          </li>
-          <li class="menu-item">
-            <a href="https://yr.media/career-opportunities/">Careers at YR</a>
-          </li>
-          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-43302">
-            <a href="https://yr.media/contact/">Contact Us</a>
-          </li>
-          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-49761">
-            <a href="https://yr.media/privacy-policy/">Privacy Policy</a>
-          </li>
-        </ul>
-      </div>
-      <div class="item social-container">
-        <ul class="social-menu">
-          <li><a href="https://www.youtube.com/user/youthradio" target="_blank"><span class="icon-youtube" /></a></li>
-          <li><a href="https://www.facebook.com/yrmediapage" target="_blank"><span class="icon-facebook" /></a></li>
-          <li><a href="https://twitter.com/itsYRmedia" target="_blank"><span class="icon-twitter" /></a></li>
-          <li><a href="https://www.instagram.com/yr.media" target="_blank"><span class="icon-instagram" /></a></li>
-        </ul><p>YR Media © 2019</p>
-      </div>
+  <div class="subscriptions">
+    <div>
+      <h3 class="title">
+        Get Fresh Updates
+      </h3>
+      <form class="mc-form" method="POST" action="" @submit="submit">
+        <input
+          v-model="email"
+          class="text email"
+          type="email"
+          name="mc-email"
+          rrequired
+          placeholder="enter email address"
+        >
+        <input v-model="name" type="text" value="pending" name="status" hidden="">
+        <button class="submit icon-arrow-right" type="submit" name="submit" />
+      </form>
     </div>
-    <div class="subscriptions">
-      <div>
-        <h3 class="title">
-          Get Fresh Updates
-        </h3>
-        <form class="mc-form" method="POST" action="">
-          <input class="text email" type="email" name="mc-email" required="" placeholder="enter email address">
-          <input type="text" value="pending" name="status" hidden="">
-          <button class="submit icon-arrow-right" type="submit" name="submit" />
-        </form>
-      </div>
-    </div>
-  </footer>
+  </div>
 </template>
 
 <script>
-import FullLogo from '../components/FullLogo'
 
 export default {
   components: {
-    FullLogo
+
+  },
+  data () {
+    return {
+      name: null,
+      email: null,
+      errors: []
+
+    }
+  },
+  methods: {
+    submit () {
+    //   // const url = 'https://yr.media/wp-admin/admin-ajax.php'
+    //      if (this.name && this.age) {
+    //        return true;
+    //     }
+    //     e.preventDefault()
+    //     const submitBtn = $(this)
+    //     const form = $(this).parent()
+    //     const email = form.find('.email').val()
+
+      //     const data = {
+      //       action: 'mailchimp_subscription',
+      //       email
+      //     }
+
+      //     submitBtn.css('pointer-events', 'none')
+      //     form.find('.message').remove()
+
+      //     $.ajax({
+      //       method: 'POST',
+      //       url: ajaxVariables.ajaxurl,
+      //       data,
+      //       success (response) {
+      //         response = JSON.parse(response)
+      //         const messageClassName = response.success ? 'message' : 'message error-message'
+      //         form.append(`<p class="${messageClassName}">${response.message}</p>`)
+      //         submitBtn.css('pointer-events', 'all')
+      //         setTimeout(function () {
+      //           form.find('.message').remove()
+      //         }, 6000)
+      //       },
+      //       error () {
+      //         form.append('<p class="message error-message">Sorry, the request failed. Please, try again later.</p>')
+      //         submitBtn.css('pointer-events', 'all')
+
+    //         setTimeout(function () {
+    //           form.find('.message').remove()
+    //         }, 6000)
+    //       }
+    //     })
+    //   })
+    // }
+    }
   }
 }
 </script>
@@ -63,7 +85,20 @@ export default {
 <style scoped lang="scss">
 @import '~@/css/mixins';
 @import "~@/css/vars";
-@import "~@/css/base";
+
+form {
+
+    > input[type="text"],
+    > input[type="email"]{
+      &:invalid {
+        color: $red;
+      }
+
+      &:valid {
+        color: $white;
+      }
+    }
+}
 
 ul {
     padding: 0;
@@ -156,6 +191,7 @@ footer {
       @include breakpoint(large) {
         display: flex;
         justify-content: center;
+        align-items: center;
       }
     }
 

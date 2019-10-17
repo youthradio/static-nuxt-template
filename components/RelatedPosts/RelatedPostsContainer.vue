@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import POSTCONFIG from '../post.config'
-import RelatedPosts from '~/components/RelatedPosts.vue'
+import POSTCONFIG from '../../post.config'
+import RelatedPosts from './RelatedPosts.vue'
 
 export default {
   components: {
