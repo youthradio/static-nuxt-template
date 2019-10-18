@@ -15,10 +15,10 @@
         >
         <input v-model="name" type="text" value="pending" name="status" hidden="">
         <button class="submit icon-arrow-right" type="submit" name="submit" />
-        <p v-if="response.error" class="message error-message">
+        <p v-if="response && response.error" class="message error-message">
           {{ response.message }}
         </p>
-        <p v-if="response.sucess" class="message error-message">
+        <p v-if="response && response.sucess" class="message">
           {{ response.message }}
         </p>
       </form>
@@ -46,12 +46,12 @@ export default {
         return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key])
       }).join('&')
     },
-    async submit (email) {
+    async submit () {
       const url = 'https://yr.media/wp-admin/admin-ajax.php'
 
       const data = {
         action: 'mailchimp_subscription',
-        email
+        email: this.email
 
       }
       try {
