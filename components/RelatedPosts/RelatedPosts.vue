@@ -16,8 +16,8 @@
           </div>
           <div class="section">
             <img
-              class="img-fluid postImage"
-              :src="post.episode_featured_image"
+              class="img-fluid postImage lazyload"
+              :data-src="post.episode_featured_image"
             >
           </div>
         </div>

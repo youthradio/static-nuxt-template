@@ -62,6 +62,10 @@ export default {
   */
   plugins: [
     {
+      src: '~plugins/lazysizes.js',
+      ssr: false
+    },
+    {
       src: '~plugins/vue-observable.js',
       ssr: false
     }
@@ -98,7 +102,11 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend (config, { isDev, isClient, loaders: { vue } }) {
+      if (isClient) {
+        vue.transformAssetUrls.img = ['data-src', 'src']
+        vue.transformAssetUrls.source = ['data-srcset', 'srcset']
+      }
     }
   }
   // server: {
