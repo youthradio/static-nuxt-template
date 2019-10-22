@@ -6,17 +6,18 @@
       </a>
     </li>
     <li>
-      <a href="https://google.com" target="_blank">
+      <a href="https://www.facebook.com/sharer/sharer.php?u={ currentURL }" target="_blank">
         <span class="share icon-facebook-inverted" />
       </a>
     </li>
     <li>
-      <a href="https://google.com" target="_blank">
+      <!-- <a :href="'https://twitter.com/home?status=' + window.location.href " target="_blank"> -->
+      <a href="https://twitter.com/home?status=" target="_blank">
         <span class="share icon-twitter-inverted" />
       </a>
     </li>
     <li>
-      <a href="https://google.com" target="_blank">
+      <a href="mailto:info@example.com?&subject=&body= " target="_blank">
         <span class="share icon-email-inverted" />
       </a>
     </li>
@@ -26,6 +27,7 @@
 <script>
 
 export default {
+  computed: {}
 }
 
 </script>

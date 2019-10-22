@@ -39,8 +39,7 @@ export default {
     return {
     }
   },
-  computed: {
-  },
+  computed: {},
   watch: {
 
   },
