@@ -1,33 +1,47 @@
 <template>
   <ul class="socialList">
     <li>
-      <a href="https://google.com" target="_blank">
-        <span class="share icon-share" />
-      </a>
+      <span class="icon-share" />
     </li>
     <li>
-      <a href="https://google.com" target="_blank">
-        <span class="share icon-facebook-inverted" />
-      </a>
+      <span class="share icon-facebook-inverted" @click="facebookThis" />
     </li>
     <li>
-      <a href="https://google.com" target="_blank">
-        <span class="share icon-twitter-inverted" />
-      </a>
+      <span class="share icon-twitter-inverted" @click="tweetMessage" />
     </li>
     <li>
-      <a href="https://google.com" target="_blank">
-        <span class="share icon-email-inverted" />
-      </a>
+      <span class="share icon-email-inverted" @click="emailThis" />
     </li>
   </ul>
 </template>
 
 <script>
+import POSTCONFIG from '../../post.config'
 
 export default {
+  computed: {},
+  methods: {
+    tweetMessage () {
+      const url = window.location.href
+      const tweet = POSTCONFIG.title + ` :${url}`
+      const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`
+      window.open(tweetUrl, 'pop', 'width=600, height=400, scrollbars=no')
+    },
+    facebookThis () {
+      const url = window.location.href
+      const title = POSTCONFIG.title
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&t=${title}`
+      window.open(facebookUrl, '_blank')
+    },
+    emailThis () {
+      const url = window.location.href
+      const subject = POSTCONFIG.title
+      const body = POSTCONFIG.description + `, ${url}`
+      const emailURL = `mailto:info@example.com?&subject=${subject}&body=${body}`
+      window.open(emailURL)
+    }
+  }
 }
-
 </script>
 
 <style scoped lang="scss" >
@@ -39,6 +53,9 @@ export default {
 }
 .green {
     color: $green;
+}
+.share{
+  cursor: pointer;
 }
 .socialList {
     display: flex;
