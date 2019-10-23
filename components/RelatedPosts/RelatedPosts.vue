@@ -11,14 +11,18 @@
         <div class="postInner">
           <div class="section">
             <h3>
-              {{ post.title.rendered | unescape }}
+              <a :style="'borderBottom: 2px solid' + post.acf.secondary_color" :href="post.link">
+                {{ post.title.rendered | unescape }}
+              </a>
             </h3>
           </div>
           <div class="section">
-            <img
-              class="img-fluid postImage lazyload"
-              :data-src="post.episode_featured_image"
-            >
+            <a :href="post.link">
+              <img
+                class="img-fluid postImage lazyload"
+                :data-src="post.episode_featured_image"
+              >
+            </a>
           </div>
         </div>
       </div>
@@ -73,6 +77,13 @@ export default {
   margin: 1.5rem;
   h3 {
     font-weight: 800;
+  }
+
+  a{
+    border-bottom: none;
+  }
+  a:hover{
+    background-color: transparent;
   }
   @include breakpoint (medium){
   .section{
