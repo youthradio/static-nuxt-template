@@ -83,7 +83,7 @@ export default {
     border-bottom: none;
   }
   a:hover{
-    background-color: white;
+    background-color: transparent;
   }
   @include breakpoint (medium){
   .section{

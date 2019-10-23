@@ -4,13 +4,18 @@
       <span class="icon-share" />
     </li>
     <li>
-      <span class="share icon-facebook-inverted" @click="facebookThis" />
+      <a class="icon" @click="facebookThis">
+        <span class="share icon-facebook-inverted" />
+      </a>
     </li>
     <li>
-      <span class="share icon-twitter-inverted" @click="tweetMessage" />
-    </li>
-    <li>
-      <span class="share icon-email-inverted" @click="emailThis" />
+      <a class="icon" @click="tweetMessage">
+        <span class="share icon-twitter-inverted" />
+      </a>
+    </li><li>
+      <a class="icon" @click="emailThis">
+        <span class="share icon-email-inverted" />
+      </a>
     </li>
   </ul>
 </template>
@@ -56,6 +61,12 @@ export default {
 }
 .share{
   cursor: pointer;
+}
+.icon{
+  border-bottom: none;
+}
+.icon:hover{
+  background-color: transparent;
 }
 .socialList {
     display: flex;
