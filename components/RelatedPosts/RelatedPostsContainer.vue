@@ -1,6 +1,9 @@
 <template>
   <div>
-    <RelatedPosts :posts-data="postsData" />
+    <RelatedPosts
+      class="row"
+      :posts-data="postsData"
+    />
   </div>
 </template>
 

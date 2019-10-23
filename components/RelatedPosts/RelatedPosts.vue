@@ -19,8 +19,8 @@
           <div class="section">
             <a :href="post.link">
               <img
-                class="img-fluid postImage"
-                :src="post.episode_featured_image"
+                class="img-fluid postImage lazyload"
+                :data-src="post.episode_featured_image"
               >
             </a>
           </div>

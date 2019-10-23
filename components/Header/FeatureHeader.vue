@@ -1,16 +1,16 @@
 <template>
   <header ref="headerImage">
     <img
-      :srcset="`${headerData.featureImage}x375.jpg 375w,
+      :data-srcset="`${headerData.featureImage}x375.jpg 375w,
         ${headerData.featureImage}x563.jpg 563w,
         ${headerData.featureImage}x1125.jpg 1125w,
         ${headerData.featureImage}x1500.jpg 1500w,
         ${headerData.featureImage}x1875.jpg 1875w,
         `"
-      :src="`${headerData.featureImage}x1875.jpg`"
+      :data-src="`${headerData.featureImage}x1875.jpg`"
       alt="Elva dressed as a fairy"
 
-      class="img-fluid"
+      class="img-fluid lazyload"
       @load="updateHeaderHeight"
     >
     <div class="title">
