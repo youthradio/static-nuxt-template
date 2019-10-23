@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { customFetcher } from '../dataFetcher'
+import { customFetcher } from './scripts/dataFetcher'
 const fs = require('fs-extra')
 
 export default function fetchData () {
@@ -20,23 +20,26 @@ export default function fetchData () {
 
   const getData = async (builder) => {
     const dataToWrite = await customFetcher()
+    console.log('DATTT___-->', dataToWrite)
+    if (dataToWrite) {
+      const fetcher = []
+      const basePath = `data/`
+      if (!fs.pathExistsSync(basePath)) { fs.emptyDir(basePath) }
+      const fileName = `${basePath}data.json`
+      console.log(`PROCESSING ${fileName}...`)
 
-    const fetcher = []
-    const basePath = `data/`
-    if (!fs.pathExistsSync(basePath)) { fs.emptyDir(basePath) }
-    const fileName = `${basePath}data.json`
-    console.log(`PROCESSING ${fileName}...`)
+      // Write list to file
+      fetcher.push(writeData(fileName, { content: dataToWrite }))
 
-    // Write list to file
-    fetcher.push(writeData(fileName, { content: dataToWrite }))
-
-    return Promise.all(fetcher)
-      .then(() => {
-        console.log('JSON Build complete!')
-      })
-      .catch((e) => {
-        throw e
-      })
+      return Promise.all(fetcher)
+        .then(() => {
+          console.log('JSON Build complete!')
+        })
+        .catch((e) => {
+          throw e
+        })
+    }
+    return null
   }
 
   // Run it before the nuxt build stage
