@@ -1,9 +1,13 @@
 <template>
-  <div
+  <!-- <div
     v-observe-visibility="{
       callback: visibilityChanged,
       once: true,
     }"
+    class="row"
+  > -->
+  <div
+
     class="row"
   >
     <USAMap
@@ -39,15 +43,17 @@ export default {
 
   },
   created () {
-    // this.loadMapData()
+    this.loadContentData()
+
+    this.loadMapData()
     // this.loadMarkersData()
-    // this.loadContentData()
   },
   mounted () {
 
   },
   methods: {
     visibilityChanged () {
+      this.loadContentData()
       this.loadMapData()
     },
     async loadMarkersData () {
@@ -66,7 +72,7 @@ export default {
     },
     async loadContentData () {
       this.loadingData = true
-      this.contentData = await fetch('    https://docs.google.com/spreadsheets/d/e/2PACX-1vQUEsaguvKunKdIYaLQnOzFuppgpTyQP3p9P_XTxLnaOFWwoEdIjmsdVYgNwWsJvjQKXteg74msIz_6/pub?gid=1657489261&single=true&output=csv')
+      this.contentData = await fetch('data/age-of-consent-information.csv')
         .then(res => res.text())
         .then(res => csvParse(res))
         .then((data) => {

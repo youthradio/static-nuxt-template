@@ -156,23 +156,34 @@ export default {
             'dy': -23.58971405029297,
             'note': {
               'title': 'VT',
-              'orientation': 'leftRight'
+              'orientation': 'leftRight',
+              'align': 'middle'
             }
           }
         ]
+
+        const basetype = d3.annotationCustomType(
+          d3.annotationLabel, { className: 'bbg-custom' })
+
         this.annotations = topojson.feature(this.mapData, this.mapData.objects.states).features.map((e) => {
           const x = this.path.centroid(e)[0]
           const y = this.path.centroid(e)[1]
           const label = e.properties.STUSPS
           const custom = b.find(d => d.note.title === label)
+          const stateData = this.contentData.find(e => e.abbr === label)
+          const age = stateData ? (stateData.values[0][1]) : ''
+
           return ({
             note: {
-              title: `${label}`,
-              label: '18',
+              label: `${label}`,
+              title: age,
               padding: 0,
-              orientation: custom ? ((label !== 'VT') ? 'leftRight' : 'bottomTop') : ''
+              bgPadding: 0,
+              align: 'middle',
+              orientation: 'topBottom'
             },
-            type: custom ? d3.annotationCallout : d3.annotationLabel,
+            offset: 0,
+            type: basetype,
             x,
             y,
             dx: custom ? custom.dx : 0,
@@ -243,6 +254,17 @@ export default {
         .on('dblclick', function () {
           makeAnnotations.editMode(!makeAnnotations.editMode()).update()
         })
+      this.svg.select('.annotation-group')
+        .selectAll('.annotation-note-title')
+        .select('tspan')
+        .attr('dy', 0)
+
+      this.svg.select('.annotation-group')
+        .selectAll('.annotation-note-label')
+        .attr('y', 0)
+
+      // .select('tspan')
+      // .attr('dy', 0)
       window.ann = makeAnnotations
     },
     renderMap () {
@@ -285,6 +307,7 @@ export default {
         .attr('filter', 'url(#drop-shadow)')
     },
     drawContentData () {
+
     },
     resizeContainer () {
       const targetWidth = parseInt(this.svg.node().parentNode.clientWidth)
@@ -299,6 +322,16 @@ export default {
 <style lang="scss" scoped>
 @import '~@/css/_vars';
 /deep/ #map {
+  .annotation-note-title{
+    font-size: 1rem;
+  }
+  .annotation-note-label{
+    font-size: 0.5rem;
+  }
+  .annotation-note-bg{
+        fill-opacity: 0.5;
+    fill: rgba(255, 0, 0, 0.379);
+  }
   .state-label{
     text-transform: uppercase;
     font-weight: bold;
