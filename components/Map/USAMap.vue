@@ -62,31 +62,40 @@ export default {
           {
             'x': 740.0849895461586,
             'y': 268.9751849465421,
-            'dx': 60.046630859375,
-            'dy': 65.40789794921875,
+            'dx': 61.118896484375,
+            'dy': 72.91372680664062,
             'note': {
-              'title': 'DC',
-              'orientation': 'leftRight'
+              'label': 'DC',
+              'title': '10',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
             'x': 743.4746223867401,
             'y': 265.89961992131657,
-            'dx': 56.8299560546875,
-            'dy': 42.890472412109375,
+            'dx': 57.9022216796875,
+            'dy': 48.25177001953125,
             'note': {
-              'title': 'MD',
-              'orientation': 'leftRight'
+              'label': 'MD',
+              'title': '10',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
             'x': 815.4069125271898,
             'y': 126.2672009342402,
             'dx': 39.673583984375,
-            'dy': 18.22845458984375,
+            'dy': 8.578094482421875,
             'note': {
-              'title': 'ME',
-              'orientation': 'leftRight'
+              'label': 'ME',
+              'title': '10',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
@@ -95,48 +104,63 @@ export default {
             'dx': 67.55242919921875,
             'dy': 47.179473876953125,
             'note': {
-              'title': 'CT',
-              'orientation': 'leftRight'
+              'label': 'CT',
+              'title': '10',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
             'x': 761.065598396688,
             'y': 262.7419972859574,
-            'dx': 39.673583984375,
-            'dy': 20.372955322265625,
+            'dx': 40.745849609375,
+            'dy': 23.5897216796875,
             'note': {
-              'title': 'DE',
-              'orientation': 'leftRight'
+              'label': 'DE',
+              'title': '7',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
             'x': 798.0169056737703,
             'y': 191.16485949689456,
             'dx': 57.90216064453125,
-            'dy': 4.289031982421875,
+            'dy': 2.1445159912109375,
             'note': {
-              'title': 'MA',
-              'orientation': 'leftRight'
+              'label': 'MA',
+              'title': '10',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
             'x': 793.4707328728683,
             'y': 164.364382245589,
-            'dx': 61.118896484375,
-            'dy': 5.361297607421875,
+            'dx': 62.191162109375,
+            'dy': 0,
             'note': {
-              'title': 'NH',
-              'orientation': 'leftRight'
+              'label': 'NH',
+              'title': '10',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
             'x': 767.8506848054253,
             'y': 238.40275364135388,
             'dx': 34.3123779296875,
-            'dy': 20.37298583984375,
+            'dy': 20.373016357421875,
             'note': {
-              'title': 'NJ',
-              'orientation': 'leftRight'
+              'label': 'NJ',
+              'title': '10',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
@@ -145,8 +169,11 @@ export default {
             'dx': 52.540771484375,
             'dy': 22.517471313476562,
             'note': {
-              'title': 'RI',
-              'orientation': 'leftRight'
+              'label': 'RI',
+              'title': '10',
+              'align': 'dynamic',
+              'orientation': 'leftRight',
+              'custom': true
             }
           },
           {
@@ -155,32 +182,39 @@ export default {
             'dx': -1.07232666015625,
             'dy': -23.58971405029297,
             'note': {
-              'title': 'VT',
-              'orientation': 'leftRight',
-              'align': 'middle'
+              'label': 'VT',
+              'title': '10',
+              'align': 'middle',
+              'orientation': 'topBottom',
+              'custom': true
             }
           }
         ]
 
         const basetype = d3.annotationCustomType(
-          d3.annotationLabel, { className: 'bbg-custom' })
+          d3.annotationLabel, {
+            className: 'bbg-custom',
+            note: {
+              padding: 0,
+              bgPadding: 0,
+              wrap: 10
+            }
+          })
 
         this.annotations = topojson.feature(this.mapData, this.mapData.objects.states).features.map((e) => {
           const x = this.path.centroid(e)[0]
           const y = this.path.centroid(e)[1]
           const label = e.properties.STUSPS
-          const custom = b.find(d => d.note.title === label)
+          const custom = b.find(d => d.note.label === label)
           const stateData = this.contentData.find(e => e.abbr === label)
           const age = stateData ? (stateData.values[0][1]) : ''
-
           return ({
             note: {
-              label: `${label}`,
+              label,
               title: age,
-              padding: 0,
-              bgPadding: 0,
-              align: 'middle',
-              orientation: 'topBottom'
+              align: custom ? ((label === 'VT') ? 'middle' : 'dynamic') : '',
+              orientation: custom ? ((label === 'VT') ? 'topBottom' : 'leftRight') : 'topBottom',
+              custom: !!(custom)
             },
             offset: 0,
             type: basetype,
@@ -243,17 +277,23 @@ export default {
     // topojson.feature(this.mapData, this.mapData.objects.states).features
   },
   methods: {
+    getTransform (el) {
+      const transform = d3.select(el).style('transform')
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+      g.setAttributeNS(null, 'transform', transform)
+      const matrix = g.transform.baseVal.consolidate().matrix
+      return { x: matrix.e, y: matrix.f }
+    },
     renderAnnotations () {
       const makeAnnotations = d3.annotation()
         .annotations(this.annotations)
-
       this.svg
         .append('g')
         .attr('class', 'annotation-group')
         .call(makeAnnotations)
-        .on('dblclick', function () {
-          makeAnnotations.editMode(!makeAnnotations.editMode()).update()
-        })
+      // .on('dblclick', function () {
+      //   makeAnnotations.editMode(!makeAnnotations.editMode()).update()
+      // })
       this.svg.select('.annotation-group')
         .selectAll('.annotation-note-title')
         .select('tspan')
@@ -262,10 +302,23 @@ export default {
       this.svg.select('.annotation-group')
         .selectAll('.annotation-note-label')
         .attr('y', 0)
+        .select('tspan')
 
-      // .select('tspan')
-      // .attr('dy', 0)
-      window.ann = makeAnnotations
+      this.svg.select('.annotation-group')
+        .selectAll('.annotation-note-label')
+        .filter(d => d.note.label === 'VT')
+        .attr('y', 0)
+        .select('tspan')
+
+      this.svg.select('.annotation-group')
+        .selectAll('.annotation-note-content')
+        .filter(d => d.note.label === 'VT')
+        .attr('transform', (d, i, nodes) => {
+          const { x, y } = this.getTransform(nodes[i])
+          return `translate(${x} ${y * 0.3})`
+        })
+
+      // window.ann = makeAnnotations
     },
     renderMap () {
       if (!this.loadingMap && !this.loadingMarkers) {
@@ -320,18 +373,32 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import '~@/css/_vars';
+@import '~@/css/vars';
+@import '~@/css/mixins';
+
 /deep/ #map {
+  .annotation-note-label tspan {
+    // text-anchor: middle;
+  }
   .annotation-note-title{
-    font-size: 1rem;
+    font-size: 2rem;
+    stroke: 'black';
+    stroke-width:'2.5';
+    stroke-opacity:'0.8';
+    @include breakpoint (medium){
+          font-size: 1rem;
+    }
   }
   .annotation-note-label{
     font-size: 0.5rem;
+    stroke: 'black';
+    stroke-width:'2.5';
+    stroke-opacity:'0.8';
   }
-  .annotation-note-bg{
-        fill-opacity: 0.5;
-    fill: rgba(255, 0, 0, 0.379);
-  }
+  // .annotation-note-bg{
+  //   // fill-opacity: 0.5;
+  //   // fill: rgba(255, 0, 0, 0.379);
+  // }
   .state-label{
     text-transform: uppercase;
     font-weight: bold;

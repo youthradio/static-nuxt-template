@@ -8,7 +8,7 @@
   > -->
   <div
 
-    class="row"
+    class="row margin"
   >
     <USAMap
       :map-data="mapData"
@@ -101,5 +101,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import '~@/css/_vars';
-
+.margin{
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+.row{
+  width: 100%;
+}
 </style>
