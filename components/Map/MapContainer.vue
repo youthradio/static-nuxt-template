@@ -1,22 +1,22 @@
 <template>
-  <!-- <div
+  <div
     v-observe-visibility="{
       callback: visibilityChanged,
       once: true,
     }"
     class="row"
-  > -->
-  <div
-
-    class="row margin"
   >
-    <USAMap
-      :map-data="mapData"
-      :markers-data="markersData"
-      :content-data="contentData"
-      :loading-markers="loadingMarkers"
-      :loading-map="loadingMap"
-    />
+    <div
+
+      class="row margin"
+    >
+      <USAMap
+        :map-data="mapData"
+        :markers-data="markersData"
+        :content-data="contentData"
+        :map-ready="mapReady"
+      />
+    </div>
   </div>
 </template>
 
@@ -36,25 +36,26 @@ export default {
       contentData: [],
       loadingMarkers: false,
       loadingMap: false,
-      loadingData: false
+      loadingData: false,
+      mapReady: false
     }
   },
   computed: {
 
   },
   created () {
-    this.loadContentData()
-
-    this.loadMapData()
+    // this.loadContentData()
+    // this.loadMapData()
     // this.loadMarkersData()
   },
   mounted () {
 
   },
   methods: {
-    visibilityChanged () {
-      this.loadContentData()
-      this.loadMapData()
+    async visibilityChanged () {
+      await this.loadContentData()
+      await this.loadMapData()
+      this.mapReady = true
     },
     async loadMarkersData () {
       this.loadingMarkers = true

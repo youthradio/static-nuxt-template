@@ -72,7 +72,7 @@ export default {
           })
         this.response = await res.json()
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
   }

@@ -1,6 +1,15 @@
 <template>
   <div class="row">
     <div id="map" />
+    <input
+      v-model="yearSlider"
+      type="range"
+      min="0"
+      max="4"
+      step="1"
+      value="0"
+      @input="rangeUpdate"
+    >
   </div>
 </template>
 
@@ -32,12 +41,7 @@ export default {
       default: null,
       required: true
     },
-    loadingMarkers: {
-      type: Boolean,
-      default: false,
-      required: true
-    },
-    loadingMap: {
+    mapReady: {
       type: Boolean,
       default: false,
       required: true
@@ -45,19 +49,21 @@ export default {
   },
   data () {
     return {
+      ageStateColorData: {},
       svg: null,
       aspect: null,
       projection: null,
       path: null,
       isMapReady: false,
-      annotations: []
+      annotations: [],
+      yearSlider: 0
     }
   },
   computed: {
   },
   watch: {
-    loadingMap () {
-      if (!this.loadingMap) {
+    mapReady () {
+      if (this.mapReady) {
         const b = [
           {
             'x': 740.0849895461586,
@@ -193,13 +199,15 @@ export default {
 
         const basetype = d3.annotationCustomType(
           d3.annotationLabel, {
-            className: 'bbg-custom',
             note: {
               padding: 0,
               bgPadding: 0,
               wrap: 10
             }
           })
+        const allAges = this.contentData.map(e => e.values.map(d => +d[1])).flat()
+        const ageRange = d3.extent(allAges)
+        const color = val => d3.interpolatePurples((val - ageRange[0]) * (0.8 - 0.1) / (ageRange[1] - ageRange[0]) + 0.1)
 
         this.annotations = topojson.feature(this.mapData, this.mapData.objects.states).features.map((e) => {
           const x = this.path.centroid(e)[0]
@@ -207,7 +215,8 @@ export default {
           const label = e.properties.STUSPS
           const custom = b.find(d => d.note.label === label)
           const stateData = this.contentData.find(e => e.abbr === label)
-          const age = stateData ? (stateData.values[0][1]) : ''
+          const age = stateData ? (stateData.values[this.yearSlider][1]) : ''
+          this.ageStateColorData[label] = stateData ? stateData.values.map(d => [d[0], color(d[1])]) : ''
           return ({
             note: {
               label,
@@ -226,10 +235,10 @@ export default {
         })
         this.renderMap()
       }
-    },
-    loadingMarkers () {
-      this.renderMap()
     }
+    // loadingMarkers () {
+    //   this.renderMap()
+    // }
   },
   created () {
   },
@@ -277,6 +286,15 @@ export default {
     // topojson.feature(this.mapData, this.mapData.objects.states).features
   },
   methods: {
+    rangeUpdate () {
+      this.svg.selectAll('.states')
+        .attr('fill', (d) => {
+          if (this.ageStateColorData[d.properties.STUSPS]) {
+            return this.ageStateColorData[d.properties.STUSPS][this.yearSlider][1]
+          }
+          return 'black'
+        })
+    },
     getTransform (el) {
       const transform = d3.select(el).style('transform')
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
@@ -332,15 +350,23 @@ export default {
         .append('path')
         // .attr('filter', 'url(#drop-shadow)')
         .attr('d', this.path(topojson.mesh(this.mapData, this.mapData.objects.states, (a, b) => a === b)))
+
       this.svg.append('g').selectAll('.states')
         .data(topojson.feature(this.mapData, this.mapData.objects.states).features)
         .enter().append('path')
         .attr('class', 'states')
         .attr('d', this.path)
-      this.svg.append('path')
-        .style('fill', 'none')
-        // .style('stroke', 'black')
-        .attr('d', this.projection.getCompositionBorders())
+        .attr('fill', (d) => {
+          if (this.ageStateColorData[d.properties.STUSPS]) {
+            return this.ageStateColorData[d.properties.STUSPS][this.yearSlider][1]
+          }
+          return 'black'
+        })
+
+      // this.svg.append('path')
+      //   .style('fill', 'none')
+      //   // .style('stroke', 'black')
+      //   .attr('d', this.projection.getCompositionBorders())
 
       this.renderAnnotations()
     },
@@ -377,23 +403,25 @@ export default {
 @import '~@/css/mixins';
 
 /deep/ #map {
-  .annotation-note-label tspan {
-    // text-anchor: middle;
-  }
+
   .annotation-note-title{
-    font-size: 2rem;
-    stroke: 'black';
-    stroke-width:'2.5';
-    stroke-opacity:'0.8';
+    font-size: 2.2rem;
+    fill: black;
+    stroke: white;
+    stroke-opacity: 0.8;
+    stroke-width: 3;
+    paint-order: stroke;
     @include breakpoint (medium){
-          font-size: 1rem;
+      font-size: 1.2rem;
     }
   }
   .annotation-note-label{
     font-size: 0.5rem;
-    stroke: 'black';
-    stroke-width:'2.5';
-    stroke-opacity:'0.8';
+    fill: black;
+    stroke: white;
+    stroke-opacity: 0.8;
+    stroke-width: 3;
+    paint-order: stroke;
   }
   // .annotation-note-bg{
   //   // fill-opacity: 0.5;
@@ -406,7 +434,6 @@ export default {
   .states {
       stroke: $dark;
       stroke-width: 1px;
-      fill: $white;
       stroke-linejoin: round;
   }
   .states:hover {
