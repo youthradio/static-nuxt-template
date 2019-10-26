@@ -4,11 +4,9 @@
       callback: visibilityChanged,
       once: true,
     }"
-    class="row"
   >
     <div
-
-      class="row margin"
+      class="margin"
     >
       <USAMap
         :map-data="mapData"
@@ -91,7 +89,7 @@ export default {
 
     async loadMapData () {
       this.loadingMap = true
-      this.mapData = await fetch('maps/all-states-light-500k.json')
+      this.mapData = await fetch('maps/us-all-states-20m-ligth.json')
         .then(res => res.json())
       this.loadingMap = false
     }
@@ -105,8 +103,5 @@ export default {
 .margin{
   margin-left: -1.5rem;
   margin-right: -1.5rem;
-}
-.row{
-  width: 100%;
 }
 </style>
