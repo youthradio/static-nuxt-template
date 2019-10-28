@@ -1,15 +1,16 @@
 <template>
   <div>
     <div id="map" />
-    <input
-      v-model="yearSlider"
-      type="range"
-      min="0"
-      max="4"
-      step="1"
-      value="0"
-      @input="rangeUpdate"
-    >
+    <div class="options">
+      <button
+        v-for="(year,id) in yearsButtonsData"
+        :key="year"
+        :class="[yearSlider === id?'active':'']"
+        @click="yearSlider = id"
+      >
+        {{ year }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -59,12 +60,30 @@ export default {
       annotations: [],
       makeAnnotations: null,
       yearSlider: 0,
-      legendData: null
+      legendData: null,
+      yearsButtonsData: {}
     }
   },
   computed: {
   },
   watch: {
+    yearSlider () {
+      this.svg.selectAll('.states')
+        .attr('fill', (d) => {
+          if (this.ageStateColorData[d.properties.STUSPS]) {
+            return this.ageStateColorData[d.properties.STUSPS][this.yearSlider][1]
+          }
+          return 'black'
+        })
+
+      this.makeAnnotations.annotations().forEach((annotation) => {
+        if (annotation.note.years) {
+          annotation.note.title = annotation.note.years[this.yearSlider][1]
+        }
+      })
+      this.makeAnnotations.updateText()
+      this.fixCustomAnnotations()
+    },
     mapReady () {
       if (this.mapReady) {
         this.preRender()
@@ -137,6 +156,10 @@ export default {
       const ageRange = d3.extent(allAges)
       const color = val => d3.interpolateOranges(1 - (val - ageRange[0]) * (1 - 0) / (ageRange[1] - ageRange[0]) + 0)
 
+      // get years options from first content data row, only years
+
+      this.yearsButtonsData = this.contentData[0].values.map(e => e[0])
+
       // filter unique ages from flat array make array of colors
       this.legendData = allAges
         .filter((e, i, values) => values.indexOf(e) === i)
@@ -169,46 +192,6 @@ export default {
         })
       })
     },
-    rangeUpdate () {
-      this.svg.selectAll('.states')
-        .attr('fill', (d) => {
-          if (this.ageStateColorData[d.properties.STUSPS]) {
-            return this.ageStateColorData[d.properties.STUSPS][this.yearSlider][1]
-          }
-          return 'black'
-        })
-
-      this.makeAnnotations.annotations().forEach((annotation) => {
-        if (annotation.note.years) {
-          annotation.note.title = annotation.note.years[this.yearSlider][1]
-        }
-      })
-      this.makeAnnotations.updateText()
-
-      this.svg.select('.annotation-group')
-        .selectAll('.annotation-note-title')
-        .select('tspan')
-        .attr('dy', 0)
-
-      this.svg.select('.annotation-group')
-        .selectAll('.annotation-note-label')
-        .attr('y', 0)
-        .select('tspan')
-
-      this.svg.select('.annotation-group')
-        .selectAll('.annotation-note-label')
-        .filter(d => d.note.label === 'VT')
-        .attr('y', 0)
-        .select('tspan')
-
-      this.svg.select('.annotation-group')
-        .selectAll('.annotation-note-content')
-        .filter(d => d.note.label === 'VT')
-        .attr('transform', (d, i, nodes) => {
-          const { x, y } = this.getTransform(nodes[i])
-          return `translate(${x} ${y * 0.3})`
-        })
-    },
     getTransform (el) {
       const transform = d3.select(el).style('transform')
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
@@ -226,6 +209,9 @@ export default {
       // .on('dblclick', function () {
       //   makeAnnotations.editMode(!makeAnnotations.editMode()).update()
       // })
+      this.fixCustomAnnotations()
+    },
+    fixCustomAnnotations () {
       this.svg.select('.annotation-group')
         .selectAll('.annotation-note-title')
         .select('tspan')
@@ -249,16 +235,21 @@ export default {
           const { x, y } = this.getTransform(nodes[i])
           return `translate(${x} ${y * 0.3})`
         })
-
-      // window.ann = makeAnnotations
     },
     renderLegend () {
       const side = 10
-      const dots = this.svg
+      const legend = this.svg
         .append('g')
         .attr('class', 'age-legend')
         .attr('transform', `translate(${WIDTH - 100}, ${HEIGHT - 100})`)
-        .selectAll('g')
+
+      legend.append('text')
+        .text('Age Range')
+        .attr('class', 'legend-title')
+        .attr('x', 0)
+        .attr('y', '-1.5rem')
+
+      const dots = legend.selectAll('g')
         .data(this.legendData)
         .enter()
         .append('g')
@@ -332,27 +323,60 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import '~@/css/vars';
-@import '~@/css/mixins';
+@import "~@/css/vars";
+@import "~@/css/mixins";
+
+.options {
+  display: flex;
+  justify-content: center;
+}
+button {
+  font-family: "Assistant", sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: $white;
+  border-color: $black;
+  border-radius: 0.3rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  margin: 5px;
+  box-shadow: 0px 2px #0000004a;
+  &:hover {
+    box-shadow: 0px 0px #0000004a;
+  }
+  &:active {
+    background-color: lighten($grey, 0.5);
+    box-shadow: 0px 1px #0000004a;
+  }
+  &.active {
+    background-color: lighten($grey, 0.5);
+    box-shadow: 0px 1px #0000004a;
+  }
+}
 
 /deep/ #map {
+  --map-legend-size: 1rem;
 
-  .annotation-note-title{
+  .legend-title {
+    text-anchor: start;
+    font-weight: bold;
+  }
+  .annotation-note-title {
     font-size: 2rem;
-    fill: black;
-    stroke: white;
+    fill: $black;
+    stroke: $white;
     stroke-opacity: 0.8;
     stroke-width: 2;
-    margin:2px ;
+    margin: 2px;
     paint-order: stroke;
-    @include breakpoint (medium){
+    @include breakpoint(medium) {
       font-size: 1.2rem;
     }
   }
-  .annotation-note-label{
+  .annotation-note-label {
     font-size: 0.5rem;
-    fill: black;
-    stroke: white;
+    fill: $black;
+    stroke: $white;
     stroke-opacity: 0.8;
     stroke-width: 2;
     paint-order: stroke;
@@ -361,36 +385,36 @@ export default {
   //   // fill-opacity: 0.5;
   //   // fill: rgba(255, 0, 0, 0.379);
   // }
-  .state-label{
+  .state-label {
     text-transform: uppercase;
     font-weight: bold;
   }
   .states {
-      stroke: $white;
-      stroke-width: 1px;
-      stroke-linejoin: round;
+    stroke: $white;
+    stroke-width: 1px;
+    stroke-linejoin: round;
   }
-  .states:hover {
-      fill: $sky-blue;
-      opacity: 1.0;
-  }
+  // .states:hover {
+  //     fill: $sky-blue;
+  //     opacity: 1.0;
+  // }
   .state-borders {
-      fill: none;
-      stroke: $dark;
-      stroke-width: 3px;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-      pointer-events: none;
+    fill: none;
+    stroke: $dark;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    pointer-events: none;
   }
-  .marker {
-      opacity: 1;
-      stroke-width: 5;
-      stroke: black;
-      &:hover {
-        /* fill: #c65067; */
-        opacity: 1;
-      }
-  }
+  // .marker {
+  //     opacity: 1;
+  //     stroke-width: 5;
+  //     stroke: black;
+  //     &:hover {
+  //       /* fill: #c65067; */
+  //       opacity: 1;
+  //     }
+  // }
   .marker-category-0 {
     fill: $red;
   }
@@ -400,9 +424,12 @@ export default {
   .marker-category-3 {
     fill: $dark;
   }
-  .age-legend{
-    font-size: 0.5rem;
+  .age-legend {
+    font-size: 1rem;
     text-anchor: middle;
+    @include breakpoint(medium) {
+      font-size: 0.8rem;
+    }
   }
 }
 </style>

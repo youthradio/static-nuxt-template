@@ -89,7 +89,7 @@ export default {
 
     async loadMapData () {
       this.loadingMap = true
-      this.mapData = await fetch('maps/us-all-states-20m-ligth.json')
+      this.mapData = await fetch('maps/us-all-states-20m-ligth-basic.json')
         .then(res => res.json())
       this.loadingMap = false
     }
