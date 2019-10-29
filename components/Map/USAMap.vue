@@ -152,19 +152,25 @@ export default {
           }
         })
       const allAges = this.contentData.map(e => e.values.map(d => +d[1])).flat()
+      // const ageRange = d3.extent(allAges)
+      const allUniqueAges = allAges
+        .filter((e, i, values) => values.indexOf(e) === i)
+        .sort((a, b) => a - b)
 
-      const ageRange = d3.extent(allAges)
-      const color = val => d3.interpolateOranges(1 - (val - ageRange[0]) * (1 - 0) / (ageRange[1] - ageRange[0]) + 0)
+      const color = (val) => {
+        const ind = allUniqueAges.indexOf(val)
+        if (ind > -1) {
+          return d3.schemePaired[ind]// d3.schemePaired(1 - (val - ageRange[0]) * (1 - 0) / (ageRange[1] - ageRange[0]) + 0)
+        }
+        return 'lightgrey'
+      }
 
       // get years options from first content data row, only years
 
       this.yearsButtonsData = this.contentData[0].values.map(e => e[0])
 
       // filter unique ages from flat array make array of colors
-      this.legendData = allAges
-        .filter((e, i, values) => values.indexOf(e) === i)
-        .sort((a, b) => a - b)
-        .map(age => [age, color(age)])
+      this.legendData = allUniqueAges.map(age => [age, color(age)])
 
       this.annotations = topojson.feature(this.mapData, this.mapData.objects.states).features.map((e) => {
         const x = this.path.centroid(e)[0]
@@ -173,7 +179,7 @@ export default {
         const custom = customLabels.find(d => d.note.label === label)
         const stateData = this.contentData.find(e => e.abbr === label)
         const age = stateData ? (stateData.values[this.yearSlider][1]) : ''
-        this.ageStateColorData[label] = stateData ? stateData.values.map(d => [d[0], color(d[1])]) : ''
+        this.ageStateColorData[label] = stateData ? stateData.values.map(d => [d[0], color(+d[1])]) : ''
         return ({
           note: {
             label,
@@ -286,7 +292,7 @@ export default {
           if (this.ageStateColorData[d.properties.STUSPS]) {
             return this.ageStateColorData[d.properties.STUSPS][this.yearSlider][1]
           }
-          return 'black'
+          return 'lightgrey'
         })
 
       // this.svg.append('path')
@@ -332,7 +338,7 @@ export default {
 }
 button {
   font-family: "Assistant", sans-serif;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   background-color: $white;
   border-color: $black;
@@ -351,6 +357,9 @@ button {
   &.active {
     background-color: lighten($grey, 0.5);
     box-shadow: 0px 1px #0000004a;
+  }
+  @include breakpoint(medium) {
+    font-size: 1rem;
   }
 }
 
@@ -393,6 +402,7 @@ button {
     stroke: $white;
     stroke-width: 1px;
     stroke-linejoin: round;
+    // fill: #fdc997;
   }
   // .states:hover {
   //     fill: $sky-blue;

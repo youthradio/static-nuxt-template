@@ -15,6 +15,7 @@
   "dependencies": {
     "@nuxtjs/google-gtag": "^1.0.4",
     "d3-array": "^2.3.3",
+    "d3-color": "^1.4.0",
     "d3-composite-projections": "^1.2.3",
     "d3-dsv": "^1.1.1",
     "d3-ease": "^1.0.5",
