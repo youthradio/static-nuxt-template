@@ -6,7 +6,7 @@
         v-for="(year,id) in yearsButtonsData"
         :key="year"
         :class="[yearSlider === id?'active':'']"
-        @click="yearSlider = id"
+        @click="yearSlider = id; setAnimation(false)"
       >
         {{ year }}
       </button>
@@ -61,7 +61,7 @@ export default {
       makeAnnotations: null,
       yearSlider: 0,
       legendData: null,
-      yearsButtonsData: {}
+      yearsButtonsData: []
     }
   },
   computed: {
@@ -90,6 +90,7 @@ export default {
         this.drawMap()
         this.renderAnnotations()
         this.renderLegend()
+        this.setAnimation(true)
       }
     }
   },
@@ -322,6 +323,15 @@ export default {
       const targetWidth = parseInt(this.svg.node().parentNode.clientWidth)
       this.svg.attr('width', targetWidth)
       this.svg.attr('height', Math.round(targetWidth / this.aspect))
+    },
+    setAnimation (state) {
+      if (state && !this.timer) {
+        this.timer = setInterval(() => {
+          this.yearSlider = (this.yearSlider + 1) % this.yearsButtonsData.length
+        }, 600)
+      } else {
+        clearInterval(this.timer)
+      }
     }
   }
 }
