@@ -153,15 +153,15 @@ export default {
           }
         })
       const allAges = this.contentData.map(e => e.values.map(d => +d[1])).flat()
-      // const ageRange = d3.extent(allAges)
+      const ageRange = d3.extent(allAges)
       const allUniqueAges = allAges
         .filter((e, i, values) => values.indexOf(e) === i)
         .sort((a, b) => a - b)
 
       const color = (val) => {
-        const ind = allUniqueAges.indexOf(val)
-        if (ind > -1) {
-          return d3.schemePaired[ind]// d3.schemePaired(1 - (val - ageRange[0]) * (1 - 0) / (ageRange[1] - ageRange[0]) + 0)
+        // const ind = allUniqueAges.indexOf(val)
+        if (!isNaN(val)) {
+          return d3.interpolatePlasma(0.35 + ((val - ageRange[0]) * (1 - 0) / (ageRange[1] - ageRange[0]) + 0) * 0.65)
         }
         return 'lightgrey'
       }
@@ -248,13 +248,13 @@ export default {
       const legend = this.svg
         .append('g')
         .attr('class', 'age-legend')
-        .attr('transform', `translate(${WIDTH - 100}, ${HEIGHT - 100})`)
+        .attr('transform', `translate(${WIDTH - 150}, ${HEIGHT - 100})`)
 
       legend.append('text')
         .text('Age Range')
         .attr('class', 'legend-title')
         .attr('x', 0)
-        .attr('y', '-1.5rem')
+        .attr('y', '-1.2rem')
 
       const dots = legend.selectAll('g')
         .data(this.legendData)
@@ -275,7 +275,7 @@ export default {
         .append('text')
         .attr('x', side / 2)
         .attr('y', -10)
-        .text(d => d[0])
+        .text((_, i) => i === 0 ? 'Youngest' : 'Oldest')
     },
     drawMap () {
       this.svg.append('g')
@@ -448,7 +448,7 @@ button {
     font-size: 1rem;
     text-anchor: middle;
     @include breakpoint(medium) {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
     }
   }
 }

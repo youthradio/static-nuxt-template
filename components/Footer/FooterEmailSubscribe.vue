@@ -59,16 +59,9 @@ export default {
           {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/x-www-form-urlencoded;',
-              'charset': 'UTF-8'
+              'Content-Type': 'application/x-www-form-urlencoded;'
             },
-            body: this.encode(data),
-            mode: 'no-cors'
-
-            // redirect: 'follow',
-            // referrer: 'no-referrer',
-            // credentials: 'same-origin',
-            // cache: 'no-cache'
+            body: this.encode(data)
           })
         this.response = await res.json()
       } catch (error) {
