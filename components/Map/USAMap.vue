@@ -1,15 +1,20 @@
 <template>
   <div>
     <div id="map" />
-    <div class="options">
-      <button
-        v-for="(year,id) in yearsButtonsData"
-        :key="year"
-        :class="[yearSlider === id?'active':'']"
-        @click="yearSlider = id; setAnimation(false)"
-      >
-        {{ year }}
-      </button>
+    <div>
+      <div class="title">
+        Years
+      </div>
+      <div class="options">
+        <button
+          v-for="(year,id) in yearsButtonsData"
+          :key="year"
+          :class="[yearSlider === id?'active':'']"
+          @click="yearSlider = id"
+        >
+          {{ year }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -90,7 +95,7 @@ export default {
         this.drawMap()
         this.renderAnnotations()
         this.renderLegend()
-        this.setAnimation(true)
+        // this.setAnimation(true)
       }
     }
   },
@@ -161,7 +166,7 @@ export default {
       const color = (val) => {
         // const ind = allUniqueAges.indexOf(val)
         if (!isNaN(val)) {
-          return d3.interpolatePlasma(0.35 + ((val - ageRange[0]) * (1 - 0) / (ageRange[1] - ageRange[0]) + 0) * 0.65)
+          return d3.interpolatePlasma(0.35 + ((val - ageRange[0]) * (1 - 0) / (ageRange[1] - ageRange[0]) + 0) * 0.55)
         }
         return 'lightgrey'
       }
@@ -250,12 +255,6 @@ export default {
         .attr('class', 'age-legend')
         .attr('transform', `translate(${WIDTH - 150}, ${HEIGHT - 100})`)
 
-      legend.append('text')
-        .text('Age Range')
-        .attr('class', 'legend-title')
-        .attr('x', 0)
-        .attr('y', '-1.2rem')
-
       const dots = legend.selectAll('g')
         .data(this.legendData)
         .enter()
@@ -270,12 +269,23 @@ export default {
         .attr('height', side)
         .attr('fill', d => d[1])
 
-      dots
-        .filter((d, i, nodes) => i === 0 || i === nodes.length - 1)
+      const legendWidth = legend.node().getBoundingClientRect().width
+      legend
         .append('text')
-        .attr('x', side / 2)
-        .attr('y', -10)
-        .text((_, i) => i === 0 ? 'Youngest' : 'Oldest')
+        .attr('x', 0)
+        .attr('y', '-0.25rem')
+        .text('Youngest')
+      legend
+        .append('text')
+        .attr('x', legendWidth)
+        .attr('y', '-0.25rem')
+        .text('Oldest')
+
+      legend.append('text')
+        .text('Age Range')
+        .attr('class', 'legend-title')
+        .attr('x', legendWidth / 2)
+        .attr('y', '-1rem')
     },
     drawMap () {
       this.svg.append('g')
@@ -323,16 +333,16 @@ export default {
       const targetWidth = parseInt(this.svg.node().parentNode.clientWidth)
       this.svg.attr('width', targetWidth)
       this.svg.attr('height', Math.round(targetWidth / this.aspect))
-    },
-    setAnimation (state) {
-      if (state && !this.timer) {
-        this.timer = setInterval(() => {
-          this.yearSlider = (this.yearSlider + 1) % this.yearsButtonsData.length
-        }, 600)
-      } else {
-        clearInterval(this.timer)
-      }
     }
+    // setAnimation (state) {
+    //   if (state && !this.timer) {
+    //     this.timer = setInterval(() => {
+    //       this.yearSlider = (this.yearSlider + 1) % this.yearsButtonsData.length
+    //     }, 600)
+    //   } else {
+    //     clearInterval(this.timer)
+    //   }
+    // }
   }
 }
 </script>
@@ -342,13 +352,23 @@ export default {
 @import "~@/css/vars";
 @import "~@/css/mixins";
 
+.title {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  @include breakpoint(medium) {
+    font-size: 0.7rem;
+  }
+}
 .options {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 button {
   font-family: "Assistant", sans-serif;
-  font-size: 0.8rem;
+  font-size: 1.1rem;
+
   font-weight: bold;
   background-color: $white;
   border-color: $black;
@@ -369,15 +389,12 @@ button {
     box-shadow: 0px 1px #0000004a;
   }
   @include breakpoint(medium) {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 }
 
 /deep/ #map {
-  --map-legend-size: 1rem;
-
   .legend-title {
-    text-anchor: start;
     font-weight: bold;
   }
   .annotation-note-title {
