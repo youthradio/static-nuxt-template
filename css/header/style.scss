@@ -38,14 +38,15 @@ a {
   text-decoration: none;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
-input[type='text'],
-input[type='email'],
-input[type='tel'],
-input[type='password'],
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
 textarea {
   background-color: white;
 }
@@ -64,7 +65,7 @@ header.main-header {
   // height: $header-height;
   &:before {
     position: absolute;
-    content: '';
+    content: "";
     z-index: 2000;
     top: -100vh;
     left: 0;
@@ -256,7 +257,7 @@ header.main-header {
           height: 31px;
           background-color: rgba(255, 255, 255, 0.5);
           color: white;
-          font-family: 'Solano Gothic MVB', sans-serif;
+          font-family: "Solano Gothic MVB", sans-serif;
           font-weight: 600;
           font-size: 25px;
           text-transform: uppercase;
@@ -277,7 +278,6 @@ header.main-header {
         color: white;
       }
     }
-
 
     @include breakpoint(large) {
       padding: 20px 0 32px;
@@ -395,7 +395,7 @@ nav.main-navigation {
 
   ul.pages-menu {
     li {
-      font-family: 'Roboto Mono', sans-serif;
+      font-family: "Roboto Mono", sans-serif;
       font-size: 12px;
       font-weight: 600;
       line-height: 1.875;
@@ -500,7 +500,7 @@ nav.main-navigation {
     .header-container {
       &:after {
         position: absolute;
-        content: '';
+        content: "";
         right: 0;
         left: 0;
         bottom: -29px;
@@ -563,7 +563,7 @@ nav.main-navigation {
     top: 0;
   }
 }
-.top-header.hide-navigation{
+.top-header.hide-navigation {
   header.main-header {
     top: -100px;
   }
