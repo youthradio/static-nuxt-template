@@ -18,6 +18,7 @@
 <script>
 
 import CommonUtils from '../mixins/CommonUtils'
+import ArticleData from '../data/data.json'
 import RelatedPostsContainer from '~/components/RelatedPosts/RelatedPostsContainer'
 import MapContainer from '~/components/Map/MapContainer'
 import HeaderContainer from '~/components/Header/HeaderContainer'
@@ -43,8 +44,10 @@ export default {
   watch: {
 
   },
-  async asyncData (ctx) {
-
+  asyncData (ctx) {
+    return {
+      articleData: ArticleData.content
+    }
   },
   mounted () {
   },
