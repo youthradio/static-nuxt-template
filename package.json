@@ -26,7 +26,7 @@
     "d3-transition": "^1.3.2",
     "gootenberg": "git://github.com/radames/gootenberg.git#test-security-updates",
     "howler": "^2.1.2",
-    "lazysizes": "^5.1.2",
+    "lazysizes": "^5.2.0",
     "marked": "^0.7.0",
     "nuxt": "^2.10.2",
     "scrollmagic": "^2.0.7",
