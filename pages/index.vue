@@ -36,6 +36,11 @@ export default {
   mixins: [
     CommonUtils
   ],
+  asyncData (ctx) {
+    return {
+      articleData: ArticleData.content
+    }
+  },
   data () {
     return {
     }
@@ -43,11 +48,6 @@ export default {
   computed: {},
   watch: {
 
-  },
-  asyncData (ctx) {
-    return {
-      articleData: ArticleData.content
-    }
   },
   mounted () {
   },
@@ -60,5 +60,4 @@ export default {
 <style lang="scss" scoped>
 @import "~@/css/vars";
 @import "~@/css/base";
-
 </style>

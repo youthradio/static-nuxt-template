@@ -5,13 +5,10 @@ import Gootenberg from 'gootenberg'
 import marked from 'marked'
 import createDOMPurify from 'dompurify'
 import { JSDOM } from 'jsdom'
+import utils from '../../util/utils.js'
 import credentials from './credentials.json'
 
 const DOMPurify = createDOMPurify(new JSDOM('').window)
-const configDOMPurify = {
-  ALLOWED_TAGS: ['a'],
-  KEEP_CONTENT: true
-}
 const DOC_ID = '1OCn6AQNVkgJ_4jHLFQOwIxvCDaxvZ-7XnZLbHHL0bOQ'
 // const DURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRaNDBN4NpVISkVvaKK_FPQSwRZorhpIKb0bsaPTm0gKwvVviTHvcpHJsr5erVrjpiPH9YZupinUljz/pub?gid=0&single=true&output=csv'
 
@@ -74,7 +71,21 @@ function markdown2html (data) {
         return
       }
       if (typeof obj[key] === 'string' || obj[key] instanceof String) {
-        obj[key] = DOMPurify.sanitize(marked(obj[key]), configDOMPurify)
+        let configDom = {
+          ALLOWED_TAGS: ['a'],
+          KEEP_CONTENT: true
+        }
+        if (key === 'text') {
+          configDom = {
+            ALLOWED_TAGS: ['a', 'p', 'img', 'div', 'iframe', 'style', 'strong', 'i'],
+            KEEP_CONTENT: true
+          }
+        }
+        obj[key] = DOMPurify.sanitize(marked(obj[key]), configDom).trim()
+        // make slugs from titles
+        if (key === 'title') {
+          obj.slug = utils.makeSlug(obj[key])
+        }
       }
     })
   }
@@ -90,8 +101,10 @@ export async function customFetcher () {
     const data = await goot.parse.archie(DOC_ID)
     convertedData = markdown2html(data)
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log('Error fetching data', e)
   }
+  // convertedData
 
   // return some JSON Object
   return convertedData
