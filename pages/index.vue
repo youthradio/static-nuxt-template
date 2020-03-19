@@ -10,7 +10,6 @@
       <p>In vitae turpis massa sed elementum tempus egestas. Eget mi proin sed libero enim sed faucibus. Nullam non nisi est sit amet facilisis magna etiam tempor. Arcu non sodales neque sodales ut etiam. Magna sit amet purus gravida quis blandit turpis. Ultricies mi quis hendrerit dolor magna eget est lorem. Euismod elementum nisi quis eleifend quam adipiscing vitae. Urna porttitor rhoncus dolor purus. Nec ullamcorper sit amet risus nullam eget. Mi tempus imperdiet nulla malesuada pellentesque elit. Vulputate mi sit amet mauris commodo quis imperdiet massa. Integer feugiat scelerisque varius morbi enim.</p>
     </article>
     <ShareContainer />
-    <RelatedPostsContainer />
     <FooterContainer />
   </div>
 </template>
@@ -19,7 +18,6 @@
 
 import CommonUtils from '../mixins/CommonUtils'
 import ArticleData from '../data/data.json'
-import RelatedPostsContainer from '~/components/RelatedPosts/RelatedPostsContainer'
 import MapContainer from '~/components/Map/MapContainer'
 import HeaderContainer from '~/components/Header/HeaderContainer'
 import ShareContainer from '~/components/custom/ShareContainer'
@@ -27,7 +25,6 @@ import FooterContainer from '~/components/Footer/FooterContainer'
 
 export default {
   components: {
-    RelatedPostsContainer,
     MapContainer,
     HeaderContainer,
     ShareContainer,
