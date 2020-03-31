@@ -1,6 +1,14 @@
-# A College Guide to ... Myself
+# Static Generator Template
 
 > My stunning Nuxt.js project
+
+After creating a new project from this template you will have to add our components submodule
+
+This command will clone our base components repository
+
+```bash
+git submodule add git@github.com:youthradio/base-components.git components
+```
 
 ## Build Setup
 
