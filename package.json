@@ -8,7 +8,7 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "deploy": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/ && cp -R .github _site/",
+    "deploy": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/ && cp -R .github _site/ && cd _site && git add . && git commit --amend --no-edit && git push  origin gh-pages --force",
     "generate": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "gh-pages": "npm run generate && cd _site && git add . && git commit --amend --no-edit && git push  origin gh-pages --force"
