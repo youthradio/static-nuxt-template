@@ -1,5 +1,5 @@
 const utils = {
-  makeSlug (s) {
+  makeSlug(s) {
     return s
       .toString()
       .trim()

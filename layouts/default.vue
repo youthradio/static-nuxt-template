@@ -1,12 +1,9 @@
 <template>
-  <div>
+  <div class="sans-serif overflow-hidden">
     <nuxt />
   </div>
 </template>
 
-<style  lang="scss">
-// @import '~@/css/fonts';
-@import '~@/css/vars';
-@import '~@/css/base';
-
+<style lang="scss">
+@import '~assets/css/styles.scss';
 </style>

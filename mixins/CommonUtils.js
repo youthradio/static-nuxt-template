@@ -1,20 +1,22 @@
 export default {
-  data () {
+  data() {
     return {
       _mixingDebouceTimer: null
     }
   },
   computed: {
-    isLoading () {
+    isLoading() {
       return this.$store.state.isLoading
     }
   },
   methods: {
-    debouceEvent (event, callback) {
+    debouceEvent(event, callback) {
       if (this._mixingDebouceTimer) {
         window.cancelAnimationFrame(this._mixingDebouceTimer)
       }
-      this._mixingDebouceTimer = window.requestAnimationFrame(() => callback(event))
+      this._mixingDebouceTimer = window.requestAnimationFrame(() =>
+        callback(event)
+      )
     }
   }
 }

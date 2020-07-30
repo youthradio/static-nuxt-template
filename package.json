@@ -12,7 +12,8 @@
     "deploy": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/ && cp -R .github _site/ && cd _site && git add . && git commit --amend --no-edit && git push  origin gh-pages --force",
     "generate": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "gh-pages": "yarn run generate && cd _site && git add . && git commit --amend --no-edit && git push  origin gh-pages --force"
+    "gh-pages": "yarn run generate && cd _site && git add . && git commit --amend --no-edit && git push  origin gh-pages --force",
+    "fetch-data": "node scripts/getdata.js"
   },
   "dependencies": {
     "@nuxtjs/google-gtag": "^1.0.4",
@@ -42,10 +43,14 @@
     "dompurify": "^2.0.8",
     "dotenv": "^8.2.0",
     "eslint": "^7.3.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-nuxt": "^1.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "jsdom": "^16.2.2",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.13.1",
-    "sass-loader": "^9.0.2"
+    "prettier": "^1.19",
+    "sass-loader": "^9.0.2",
+    "tachyons-sass": "^4.9.5"
   }
 }

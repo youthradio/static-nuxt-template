@@ -1,48 +1,14 @@
 // import { csvParse } from 'd3-dsv'
 // import { group } from 'd3-array'
 // import fetch from 'node-fetch'
-import Gootenberg from 'gootenberg'
-import marked from 'marked'
-import createDOMPurify from 'dompurify'
-import { JSDOM } from 'jsdom'
-import utils from '../../util/utils.js'
-import credentials from './credentials.json'
+const Gootenberg = require('gootenberg')
+const marked = require('marked')
+const createDOMPurify = require('dompurify')
+const { JSDOM } = require('jsdom')
+const { makeSlug } = require('./utils.js')
+const credentials = require('./credentials.json')
 
 const DOMPurify = createDOMPurify(new JSDOM('').window)
-const DOC_ID = '1OCn6AQNVkgJ_4jHLFQOwIxvCDaxvZ-7XnZLbHHL0bOQ'
-// const DURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRaNDBN4NpVISkVvaKK_FPQSwRZorhpIKb0bsaPTm0gKwvVviTHvcpHJsr5erVrjpiPH9YZupinUljz/pub?gid=0&single=true&output=csv'
-
-// export async function customFetcher () {
-//   let csvdata = null
-//   try {
-//     csvdata = await fetch(DURL)
-//       .then((d) => {
-//         return d.text()
-//       })
-//       .then(d => csvParse(d))
-//       .then((data) => {
-//         data = data.filter(e => e.TOPIC !== '')
-//         return data
-//       })
-//   } catch (e) {
-//     console.log('Error fetching data', e)
-//   }
-
-//   const dataArray = Array.from(group(csvdata, d => d.TOPIC),
-//     ([key, value]) => ({ key, values: value }))
-
-//   const questionsData = dataArray.map(e => ({
-//     topic: e.key,
-//     headline: e.values[0] ? e.values[0].Headline : '',
-//     options: e.values.map(o => ({
-//       option: o.OPTIONS,
-//       response: o.RESPONSES
-//     }))
-//   }))
-
-//   // return some JSON Object
-//   return questionsData
-// }
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -62,7 +28,15 @@ marked.setOptions({
   xhtml: false
 })
 
-function markdown2html (data) {
+const renderer = {
+  link(href, title, text) {
+    return `<a target="_blank" rel="nofollow" href="${href}" class="link blue underline underline-hover hover-dark-red">${text}</a>`
+  }
+}
+
+marked.use({ renderer })
+
+function markdown2html(data) {
   const copy = Object.assign(data, {})
   const interate = (obj) => {
     Object.keys(obj).forEach((key) => {
@@ -77,14 +51,29 @@ function markdown2html (data) {
         }
         if (key === 'text') {
           configDom = {
-            ALLOWED_TAGS: ['a', 'p', 'img', 'div', 'iframe', 'style', 'strong', 'i'],
+            ADD_ATTR: ['target'],
+            ALLOWED_TAGS: [
+              'a',
+              'p',
+              'b',
+              'img',
+              'br',
+              'div',
+              'iframe',
+              'style',
+              'strong',
+              'i'
+            ],
             KEEP_CONTENT: true
           }
         }
         obj[key] = DOMPurify.sanitize(marked(obj[key]), configDom).trim()
         // make slugs from titles
         if (key === 'title') {
-          obj.slug = utils.makeSlug(obj[key])
+          obj.slug = makeSlug(obj[key])
+        }
+        if (key === 'name' || key === 'author') {
+          obj.authorslug = makeSlug(obj[key])
         }
       }
     })
@@ -93,7 +82,7 @@ function markdown2html (data) {
   return copy
 }
 
-export async function customFetcher () {
+async function customFetcher(DOC_ID) {
   let convertedData = null
   try {
     const goot = new Gootenberg()
@@ -107,5 +96,7 @@ export async function customFetcher () {
   // convertedData
 
   // return some JSON Object
+  console.log(convertedData)
   return convertedData
 }
+module.exports = customFetcher

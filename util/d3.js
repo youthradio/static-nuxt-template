@@ -7,7 +7,8 @@ import * as interpolate from 'd3-scale-chromatic'
 import * as color from 'd3-color'
 import * as array from 'd3-array'
 
-const d3 = Object.assign({},
+const d3 = Object.assign(
+  {},
   selection,
   transition,
   geo,
