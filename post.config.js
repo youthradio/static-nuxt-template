@@ -1,5 +1,5 @@
 module.exports = {
-  baseURL: '/static-nuxt-template',
+  baseURL: process.env.BASE_URL_PRODUCTION || '/static-nuxt-template',
   title: 'Static Template Title',
   author: 'Static Author',
   publishDate: 'Oct. 2, 2019',

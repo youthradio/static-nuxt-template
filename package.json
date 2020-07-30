@@ -8,12 +8,13 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "worktree": "git checkout --orphan gh-pages && git reset --hard && git commit --allow-empty -m 'Init' && git checkout master && git worktree add _site gh-pages",
-    "deploy": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/ && cp -R .github _site/ && cd _site && git add . && git commit --amend --no-edit && git push  origin gh-pages --force",
-    "generate": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/",
+    "export": "nuxt build && nuxt export && rm -rf _site/* && cp -R dist/ _site/",
+    "publish-ghpages": "nuxt build && nuxt export",
+    "fetch-data": "node scripts/getdata.js",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "gh-pages": "yarn run generate && cd _site && git add . && git commit --amend --no-edit && git push  origin gh-pages --force",
-    "fetch-data": "node scripts/getdata.js"
+    "worktree": "git checkout --orphan gh-pages && git reset --hard && git commit --allow-empty -m 'Init' && git checkout master && git worktree add _site gh-pages",
+    "gh-pages": "yarn export && cd _site && git add . && git commit --amend --no-edit && git push  origin gh-pages --force",
+    "production" : "BASE_URL_PRODUCTION=/ yarn publish-ghpages && rm -rf _production/* && cp -R dist/ _production/"
   },
   "dependencies": {
     "@nuxtjs/google-gtag": "^1.0.4",
