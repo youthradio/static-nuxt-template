@@ -71,6 +71,7 @@
       <ShareContainer
         :title="postData.title"
         :description="postData.summary"
+        tweet-message=""
         class="mv3"
       />
     </main>
@@ -92,13 +93,13 @@ export default {
     MapContainer,
     HeaderContainer,
     ShareContainer,
-    FooterContainer
+    FooterContainer,
   },
   mixins: [CommonUtils],
   asyncData(ctx) {
     return {
       articleData: ArticleData.content[0],
-      postData: POSTCONFIG
+      postData: POSTCONFIG,
     }
   },
   data() {
@@ -107,7 +108,7 @@ export default {
   computed: {},
   watch: {},
   mounted() {},
-  methods: {}
+  methods: {},
 }
 </script>
 

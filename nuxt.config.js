@@ -3,13 +3,12 @@ import POSTCONFIG from './post.config'
 export default {
   telemetry: false,
   target: 'static',
-  mode: 'universal',
 
   /*
    ** Headers of the page
    */
   router: {
-    base: POSTCONFIG.baseURL
+    base: POSTCONFIG.baseURL,
   },
   head: {
     title: POSTCONFIG.title,
@@ -19,7 +18,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: POSTCONFIG.description
+        content: POSTCONFIG.description,
       },
       { property: 'og:title', content: POSTCONFIG.title },
       { property: 'og:site_name', content: POSTCONFIG.title },
@@ -37,46 +36,46 @@ export default {
       { name: 'twitter:image', content: POSTCONFIG.featureImage },
       {
         name: 'twitter:image:alt',
-        content: POSTCONFIG.featureImageDescription
+        content: POSTCONFIG.featureImageDescription,
       },
       { itemprop: 'description', content: POSTCONFIG.description },
       { itemprop: 'image', content: POSTCONFIG.featureImage },
       { name: 'msapplication-TileColor', content: '#da532c' },
-      { name: 'theme-color', content: '#ffffff' }
+      { name: 'theme-color', content: '#ffffff' },
     ],
     link: [
       {
         rel: 'icon',
         type: 'apple-touch-icon',
         sizes: '180x180',
-        href: 'favicon/apple-touch-icon.png'
+        href: 'favicon/apple-touch-icon.png',
       },
       {
         rel: 'icon',
         type: 'image/png',
         sizes: '32x32',
-        href: 'favicon/favicon-32x32.png'
+        href: 'favicon/favicon-32x32.png',
       },
       {
         rel: 'icon',
         type: 'image/png',
         sizes: '16x16',
-        href: 'favicon/favicon-16x16.png'
+        href: 'favicon/favicon-16x16.png',
       },
       { rel: 'shortcut icon', href: 'favicon/favicon-32x32.png' },
       { rel: 'manifest', href: 'favicon/site.webmanifest' },
       {
         rel: 'mask-icon',
         color: '#5bbad5',
-        href: 'favicon/safari-pinned-tab.svg'
+        href: 'favicon/safari-pinned-tab.svg',
       },
       {
         rel: 'preload',
         href: 'https://yr.media/statics/yr-media-typography/yr-typography.css',
         as: 'style',
-        onload: `this.onload=null;this.rel='stylesheet'`
-      }
-    ]
+        onload: `this.onload=null;this.rel='stylesheet'`,
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
@@ -92,19 +91,19 @@ export default {
   plugins: [
     {
       src: '~plugins/lazysizes.js',
-      ssr: false
+      ssr: false,
     },
     {
       src: '~plugins/vue-observable.js',
-      ssr: false
-    }
+      ssr: false,
+    },
   ],
   /*
    ** Nuxt.js dev-modules
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
   ],
   /*
    ** Nuxt.js modules
@@ -115,10 +114,10 @@ export default {
     config: {
       anonymize_ip: true, // anonymize IP
       page_title: POSTCONFIG.title,
-      page_path: POSTCONFIG.baseURL
+      page_path: POSTCONFIG.baseURL,
     },
     debug: false, // enable to track in dev mode
-    disableAutoPageTrack: true // disable if you don't want to track each page route with router.afterEach(...).
+    disableAutoPageTrack: true, // disable if you don't want to track each page route with router.afterEach(...).
   },
 
   /*
@@ -133,8 +132,8 @@ export default {
         vue.transformAssetUrls.img = ['data-src', 'src']
         vue.transformAssetUrls.source = ['data-srcset', 'srcset']
       }
-    }
-  }
+    },
+  },
   // server: {
   //   https: {
   //     key: readFileSync(`${process.env.SSLKEY}`),
