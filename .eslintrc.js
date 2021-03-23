@@ -9,8 +9,6 @@ module.exports = {
   },
   extends: [
     '@nuxtjs',
-    'prettier',
-    'prettier/vue',
     'plugin:prettier/recommended',
     'plugin:nuxt/recommended',
   ],
@@ -18,5 +16,7 @@ module.exports = {
   // add your custom rules here
   rules: {
     'vue/no-v-html': 0,
+    'vue/custom-event-name-casing': 0,
+    'vue/no-mutating-props': 0,
   },
 }

@@ -20,7 +20,7 @@ module.exports = {
   docs: [
     {
       name: 'Test doc',
-      id: '1OCn6AQNVkgJ_4jHLFQOwIxvCDaxvZ-7XnZLbHHL0bOQ',
+      id: '1na5DSfBATVAgtImO5mcoZdTtHfD-IDrdq9MePFKCXM8',
     },
   ],
   dataPath: 'data/data.json',
