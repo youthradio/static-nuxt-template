@@ -1,13 +1,14 @@
 // import { csvParse } from 'd3-dsv'
 // import { group } from 'd3-array'
 // import fetch from 'node-fetch'
-const Gootenberg = require('gootenberg')
-const marked = require('marked')
-const createDOMPurify = require('dompurify')
-const { JSDOM } = require('jsdom')
-const { makeSlug } = require('./utils.js')
-const credentials = require('./credentials.json')
+import Gootenberg from 'gootenberg'
+import marked from 'marked'
+import createDOMPurify from 'dompurify'
+import { JSDOM } from 'jsdom'
+import utils from './utils.js'
+import credentials from './credentials.json'
 
+const makeSlug = utils.makeSlug
 const DOMPurify = createDOMPurify(new JSDOM('').window)
 
 marked.setOptions({
@@ -30,7 +31,7 @@ marked.setOptions({
 
 const renderer = {
   link(href, title, text) {
-    return `<a target="_blank" rel="nofollow" href="${href}" class="link blue underline underline-hover hover-dark-red">${text}</a>`
+    return `<a target="_blank" rel="nofollow" href="${href}" class="link green underline underline-hover hover-dark-green">${text}</a>`
   },
 }
 
@@ -49,6 +50,13 @@ function markdown2html(data) {
           ALLOWED_TAGS: ['a'],
           KEEP_CONTENT: true,
         }
+        if (key === 'label') {
+          configDom = {
+            ADD_ATTR: ['target'],
+            ALLOWED_TAGS: ['a', 'b', 'br', 'div', 'style', 'strong', 'i'],
+            KEEP_CONTENT: true,
+          }
+        }
         if (key === 'text') {
           configDom = {
             ADD_ATTR: ['target'],
@@ -63,6 +71,8 @@ function markdown2html(data) {
               'style',
               'strong',
               'i',
+              'li',
+              'ul',
             ],
             KEEP_CONTENT: true,
           }
@@ -96,7 +106,8 @@ async function customFetcher(DOC_ID) {
   // convertedData
 
   // return some JSON Object
+  // eslint-disable-next-line no-console
   console.log(convertedData)
   return convertedData
 }
-module.exports = customFetcher
+export default customFetcher

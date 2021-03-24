@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-const fse = require('fs-extra')
-const POSTCONFIG = require('../post.config')
-const customFetcher = require('./dataFetcher')
+import fse from 'fs-extra'
+import POSTCONFIG from '../post.config.js'
+import customFetcher from './dataFetcher.js'
 
 const getData = async () => {
   const dataToWrite = {
