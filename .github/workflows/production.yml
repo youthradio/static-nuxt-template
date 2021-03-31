@@ -1,10 +1,7 @@
-name: github pages
+name: Production
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
   deploy:
@@ -35,11 +32,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install --frozen-lockfile
-      - run: yarn publish-ghpages
+      - name: Rebuild for Production
+        run: yarn publish-ghpages
         env:
-          BASE_URL_PRODUCTION: ''
+          BASE_URL_PRODUCTION: /static-nuxt-template
 
-      - name: Deploy GH-Pages
+      - name: Deploy Production
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -47,3 +45,15 @@ jobs:
           allow_empty_commit: true
           keep_files: false
           force_orphan: true
+          publish_branch: production
+
+      - name: Push to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.key }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd static//static-nuxt-template
+            git fetch && git reset --hard FETCH_HEAD && git clean -df

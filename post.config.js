@@ -1,11 +1,15 @@
+/* eslint-disable no-console */
 import ArticleData from './data/data.json'
 const content = ArticleData.content[0]
 
 const BASEURL = process.env.BASE_URL_PRODUCTION || '/static-nuxt-template'
 const CAN_URL =
-  process.env.BASE_URL_PRODUCTION === null
+  process.env.BASE_URL_PRODUCTION === ''
     ? `https://youthradio.github.io${BASEURL}`
     : `https://interactive.yr.media${BASEURL}`
+
+console.log(`BASEURL ${BASEURL}`)
+console.log(`CAN_URL ${CAN_URL}`)
 
 const POSTCONFIG = {
   baseURL: BASEURL,

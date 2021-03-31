@@ -70,8 +70,8 @@
       </article>
       <ShareContainer
         :title="postData.title"
-        :description="postData.summary"
-        tweet-message=""
+        :description="postData.description"
+        :tweet-message="postData.tweetMessage"
         class="mv3"
       />
     </main>
