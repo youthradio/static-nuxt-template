@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
+
 import ArticleData from './data/data.json'
+const projectName = process.env.GIT_REPO_NAME || ''
+
 const content = ArticleData.content[0]
 
-const BASEURL = process.env.BASE_URL_PRODUCTION || '/static-nuxt-template'
+const BASEURL = process.env.BASE_URL_PRODUCTION || `/${projectName}`
 const CAN_URL =
   process.env.BASE_URL_PRODUCTION === ''
     ? `https://youthradio.github.io${BASEURL}`

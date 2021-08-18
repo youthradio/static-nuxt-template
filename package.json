@@ -6,7 +6,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nuxt",
+    "dev": "GIT_REPO_NAME=$(basename `git rev-parse --show-toplevel`) nuxt",
     "build": "nuxt build --modern=server",
     "start": "nuxt start --modern=server",
     "export": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/",

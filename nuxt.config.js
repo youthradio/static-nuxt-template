@@ -125,6 +125,7 @@ export default {
    */
   build: {
     standalone: true,
+
     /*
      ** You can extend webpack config here
      */
@@ -132,6 +133,9 @@ export default {
       if (isClient) {
         vue.transformAssetUrls.img = ['data-src', 'src']
         vue.transformAssetUrls.source = ['data-srcset', 'srcset']
+      }
+      config.node = {
+        fs: 'empty',
       }
     },
   },
