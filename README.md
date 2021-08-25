@@ -1,61 +1,71 @@
 # Static Generator Template
 
-> My stunning Nuxt.js project
+To start, you can use the GitHub template functionality to create a new repository with a clean git tree.
 
-After creating a new project from this template you will have to add our components submodule
+Name your new project repository accurately. That will be important on the step where we share a development Github Pages URL with our stakeholders.
 
-This command will clone our base components repository
+[![image](https://user-images.githubusercontent.com/102277/130860179-1eb56b1c-e184-4ab5-95a5-5f37360d8ad6.png)](https://github.com/youthradio/static-nuxt-template/generate)
+
+Use `git clone --recursive` to clone the main repository and also fetch the [base-components](https://github.com/youthradio/base-components) submodule
 
 ```bash
-git submodule add git@github.com:youthradio/base-components.git components
+git clone --recursive git@github.com:youthradio/static-nuxt-template.git
 ```
 
 ## Build Setup
 
+We're using yarn as package management. You could use npm, but you will need to changes some scripts on `package.json` not yet covered here.
+
 ``` bash
 # install dependencies
-$ npm run install
+$ yarn install
 
 # serve with hot reload at localhost:3000
-$ npm run dev
+$ yarn dev
 
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-## Initial setup up for gh-pages worktree branch
+# export static files
+$ yarn export
 
 ```
+## Publish Setup
 
-Checkout
+Publishing on Github Pages is automatic. After you push to main branch to GitHub, there is an [action worflow](https://github.com/youthradio/static-nuxt-template/blob/main/.github/workflows/main.yml) that will build and publish it under
 
-$ git checkout --orphan gh-pages
-$ git reset --hard
-$ git commit --allow-empty -m "Init"
-$ git checkout master
+`youthradio.github.io/YOUR_REPO_NAME`
 
-Make your worktree to your deploy folder
 
-$ rm -rf _site
-$ git worktree add _site gh-pages
+## Backend
 
+We use Google Docs as a backend. The doc will be embed with a special markup laguage, [ArchieML](http://archieml.org/), making it easy to structure text as data. 
+
+Copy our [Google Doc Template](https://docs.google.com/document/d/1imJ0esjaeeq_rxh5XFTs9VCpsREOuTshZU1GRCswxN0/edit) and share it with your Google service account.
+
+* [How to make a Google Service Account](https://github.com/The-Politico/gootenberg/blob/main/docs/GoogleServiceAccount.md)
+
+## [post.config.js](https://github.com/youthradio/static-nuxt-template/blob/main/post.config.js)
+
+`post.config.js` has a bunch of configurations, including the <head> data, i.e. <title> <meta> tags but also information about the google docs linked to the project, Poll Server, DBs, etc
+
+You can customize the GH Pages URL. The default is the repository name.
+
+#### Dev URL [<>](https://github.com/youthradio/static-nuxt-template/blob/main/post.config.js#L4)
+```js
+const projectName = process.env.GIT_REPO_NAME || ''
 ```
 
-## Deploy
 
+#### Docs Ids [<>](https://github.com/youthradio/static-nuxt-template/blob/d9d56c2c706bf27e87c905880136e01e89f8fbf0/post.config.js#L37-L42)
+
+
+Grab the Google Doc id from the copied document, you could have as many docs as you need.
+
+```js
+...
+  docs: [
+    {
+      name: 'YOUR GOOGLE DOC",
+      id: '1imJ0esjaeeq_rxh5XFTs9VCpsREOuTshZU1GRCswxN0',
+    },
+  ],
+  ...
 ```
-First time
-git clone --single-branch --branch gh-pages git@github.com:youthradio/PROJECTNAME.git
-
-Update
-
-git fetch 
-git reset --hard FETCH_HEAD
-git clean -df 
-
-```
-
