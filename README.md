@@ -38,7 +38,10 @@ Publishing on Github Pages is automatic. After you push to main branch to GitHub
 
 We use Google Docs as a backend. The doc will be embed with a special markup laguage, [ArchieML](http://archieml.org/), making it easy to structure text as data. 
 
-Copy our [Google Doc Template](https://docs.google.com/document/d/1imJ0esjaeeq_rxh5XFTs9VCpsREOuTshZU1GRCswxN0/edit) and share it with your Google service account.
+Copy our [Google Doc Template](https://docs.google.com/document/d/1imJ0esjaeeq_rxh5XFTs9VCpsREOuTshZU1GRCswxN0/edit) and share it with your Google service account, or check the box to share with the same people.
+
+![image](https://user-images.githubusercontent.com/102277/131023575-7ae5d28d-3efe-4ccc-b4a1-d645da0adf52.png)
+
 
 * [How to make a Google Service Account](https://github.com/The-Politico/gootenberg/blob/main/docs/GoogleServiceAccount.md)
 
