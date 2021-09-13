@@ -11,7 +11,7 @@
     "start": "nuxt start --modern=server",
     "export": "nuxt generate && rm -rf _site/* && cp -R dist/ _site/",
     "compress-images": "node scripts/imageCompress.js",
-    "publish-ghpages": "nuxt generate",
+    "publish-ghpages": "GIT_REPO_NAME=$(basename `git rev-parse --show-toplevel`) nuxt generate",
     "fetch-data": "cd scripts && node --experimental-modules --experimental-json-modules getdata.js",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "worktree": "git checkout --orphan gh-pages && git reset --hard && git commit --allow-empty -m 'Init' && git checkout master && git worktree add _site gh-pages",

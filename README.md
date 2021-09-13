@@ -38,9 +38,11 @@ Publishing on Github Pages is automatic. After you push to main branch to GitHub
 
 We use Google Docs as a backend. The doc will be embed with a special markup laguage, [ArchieML](http://archieml.org/), making it easy to structure text as data. 
 
-Copy our [Google Doc Template](https://docs.google.com/document/d/1imJ0esjaeeq_rxh5XFTs9VCpsREOuTshZU1GRCswxN0/edit) and share it with your Google service account.
+Copy our [Google Doc Template](https://docs.google.com/document/d/1imJ0esjaeeq_rxh5XFTs9VCpsREOuTshZU1GRCswxN0/edit) and share it with your Google service account, or check the box to share with the same people.
 
 * [How to make a Google Service Account](https://github.com/The-Politico/gootenberg/blob/main/docs/GoogleServiceAccount.md)
+
+![image](https://user-images.githubusercontent.com/102277/131023575-7ae5d28d-3efe-4ccc-b4a1-d645da0adf52.png)
 
 ## [post.config.js](https://github.com/youthradio/static-nuxt-template/blob/main/post.config.js)
 
@@ -69,3 +71,16 @@ Grab the Google Doc id from the copied document, you could have as many docs as 
   ],
   ...
 ```
+
+  
+### Fetching new data
+
+After the last step of issuing a new Google service account and sharing the copied template with it, you can export a `credentials.json` file. Copy it to `/static/`.
+
+You can now run the script to fetch and parse the data from your google docs
+
+```bash
+yarn fetch-data
+```
+  
+The script will save it to `/data/` or `dataPath: '../data/data.json'` acording to you setup
