@@ -1,7 +1,9 @@
 {
-  "vetur.format.defaultFormatter.html": "prettier",
+  "vetur.format.defaultFormatter.html": "prettyhtml",
+  "vetur.format.defaultFormatter.js": "prettier",
+  "vetur.format.defaultFormatter.css": "prettier",
   "vetur.validation.template": false,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
