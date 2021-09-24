@@ -3,7 +3,7 @@
 import ArticleData from './data/data.json'
 const projectName = process.env.GIT_REPO_NAME || ''
 
-const content = ArticleData.content[0]
+const content = ArticleData?.content ? ArticleData?.content[0] : {}
 
 const BASEURL = process.env.BASE_URL_PRODUCTION || `/${projectName}`
 const CAN_URL =
@@ -16,11 +16,11 @@ console.log(`CAN_URL ${CAN_URL}`)
 
 const POSTCONFIG = {
   baseURL: BASEURL,
-  title: content.headline,
-  author: content.author,
-  publishDate: content.date,
-  location: content.location,
-  description: content.seo_description || '',
+  title: content?.headline,
+  author: content?.author,
+  publishDate: content?.date,
+  location: content?.location,
+  description: content?.seo_description,
   tweetMessage: '@itsyrmedia',
   url: CAN_URL,
   featureImage: `${CAN_URL}/social.jpg`,
