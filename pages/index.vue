@@ -1,6 +1,14 @@
 <template>
   <div>
-    <HeaderContainer />
+    <MenuHeader />
+    <feature-header-center :header-data="headerData" />
+    <ShareContainer
+      :vertical-mode="false"
+      :title="`${articleData.headline}: ${articleData.subheadline}`"
+      :description="articleData.description"
+      :tweet-message="articleData.tweetMessage"
+      class="mv3"
+    />
     <main class="mw8 center">
       <article class="lh-copy">
         <p>
@@ -42,7 +50,6 @@
           penatibus. Urna neque viverra justo nec ultrices dui sapien. Sed id
           semper risus in hendrerit gravida rutrum.
         </p>
-        <MapContainer />
         <p>
           Arcu odio ut sem nulla pharetra diam sit amet. Non sodales neque
           sodales ut etiam sit amet nisl purus. Elementum nibh tellus molestie
@@ -68,38 +75,40 @@
           massa. Integer feugiat scelerisque varius morbi enim.
         </p>
       </article>
-      <ShareContainer
-        :title="postData.title"
-        :description="postData.description"
-        :tweet-message="postData.tweetMessage"
-        class="mv3"
-      />
     </main>
     <FooterContainer />
   </div>
 </template>
 
 <script>
-import POSTCONFIG from '../post.config'
 import CommonUtils from '../mixins/CommonUtils'
 import ArticleData from '../data/data.json'
-import MapContainer from '~/components/Map/MapContainer'
-import HeaderContainer from '~/components/Header/HeaderContainer'
 import ShareContainer from '~/components/Custom/ShareContainer'
 import FooterContainer from '~/components/Footer/FooterContainer'
+import MenuHeader from '~/components/Header/MenuHeader'
+import FeatureHeaderCenter from '~/components_local/FeatureHeaderCenter'
 
 export default {
   components: {
-    MapContainer,
-    HeaderContainer,
     ShareContainer,
+    MenuHeader,
+    FeatureHeaderCenter,
     FooterContainer,
   },
   mixins: [CommonUtils],
   asyncData(ctx) {
+    const articleData = ArticleData.content[0]
     return {
-      articleData: ArticleData.content[0],
-      postData: POSTCONFIG,
+      articleData,
+      headerData: {
+        featureImage: articleData.featureImage,
+        title: articleData.headline,
+        subheadline: articleData.subheadline,
+        author: articleData.author,
+        imageCaption: articleData.featureImageDescription,
+        date: articleData.date,
+        location: articleData.location,
+      },
     }
   },
   data() {
