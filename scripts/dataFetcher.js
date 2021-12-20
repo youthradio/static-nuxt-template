@@ -2,7 +2,7 @@
 // import { group } from 'd3-array'
 // import fetch from 'node-fetch'
 import Gootenberg from 'gootenberg'
-import marked from 'marked'
+import { marked } from 'marked'
 import createDOMPurify from 'dompurify'
 import { JSDOM } from 'jsdom'
 import utils from './utils.js'
